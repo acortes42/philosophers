@@ -41,35 +41,43 @@ void	msg_write(char *msg)
 	write(1, msg, ft_strlen(msg));
 }
 
-//segfault por aqui, seguramente en uso de ese itoa
-
 void    console_info(int x, char *str)
 {
  	struct timeval now;
 
     gettimeofday(&now, NULL); 
     ft_putnbr_fd((now.tv_sec + now.tv_usec * 0.001), 1);
-    msg_write(" ");
+    msg_write("	");
     ft_putnbr_fd(x, 1);
-    msg_write(" ");
+    msg_write("	");
     msg_write(str);
-  //  free(now);
 }
 
-int	free_stats(s_stats *stats)
+
+// error en el calculo
+
+int	ask_if_alive(s_data *philo)
 {
-	int	x;
+	time_t			x;
+	int				y;
+	struct timeval	now;
 
-	x = 0;
-	while (x < stats->number_of_philo)
+    gettimeofday(&now, NULL);
+	x = (now.tv_sec - philo->last_meat.tv_sec) / 10;
+	if (now.tv_usec >= philo->last_meat.tv_sec)
+		y = ((now.tv_usec - philo->last_meat.tv_sec)) / 1000;
+	else
 	{
-		free(stats->left[x]);
-		free(stats->right[x]);
-		x++;
+		if (x > 0)
+			x--;
+		y = ((philo->last_meat.tv_sec - now.tv_usec)) / 1000;
 	}
-	free(stats->left);
-	free(stats->right);
-	free(stats);
-	return (1);
+		ft_putnbr_fd(x, 1);
+    	msg_write("\n");
+	    ft_putnbr_fd((x * 1000 + y * 0.001), 1);
+    	msg_write("\n");
+    if ((x * 1000 + y * 0.001) > philo->stats->time_to_die)
+        return (-1);
+	else
+		return(1);
 }
-

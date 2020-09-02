@@ -26,6 +26,7 @@ DIR_OBJS	=	./compiled_objs/
 SRCS			=	srcs/eat_or_die.c \
 					srcs/utils.c \
 					srcs/philo_creator.c \
+					srcs/anti_leaks.c \
 					srcs/main.c 
 
 # COMPILED_SOURCES #
@@ -50,19 +51,19 @@ $(NAME):		$(OBJS) includes/philosophers.h
 		@$(CC) $(CC_FLAGS) $(SRCS) -lpthread -o ${NAME}
 
 test:	
-	@$(CC) $(CC_FLAGS) $(SRCS) -lpthread && ./a.out 4 50000 3255 100
+	@$(CC) $(CC_FLAGS) $(SRCS) -lpthread && ./a.out 4 8000 500 1000 9
 test_unsec:	
-	@$(CC) $(SRCS) -lpthread && ./a.out 4 50000 3255 100
+	@$(CC) $(SRCS) -lpthread && ./a.out 4 50000 3255 1000
 
 # OBLIGATORY PART #
 
 clean:
 				@$(RM) $(DIR_OBJS)
-				@echo "$(_RED) '"$(DIR_OBJS)"' has been deleted. $(_END)🗑️"
+				@echo "$(_RED) '"$(DIR_OBJS)"' has been deleted.🗑️"
 
 fclean:			clean
 				@$(RM) $(NAME)
-				@echo "$(_RED) '"$(NAME)"' has been deleted. $(_END)🗑️"
+				@echo "$(_RED) '"$(NAME)"' has been deleted.🗑️"
 
 re:				fclean all
 

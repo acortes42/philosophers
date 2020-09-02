@@ -12,9 +12,9 @@
 typedef struct      t_stats
 {
     int             number_of_philo;
-    unsigned long   time_to_die;
-    unsigned long   time_eating;
-    unsigned long   time_sleeping;
+    long            time_to_die;
+    long            time_eating;
+    long            time_sleeping;
     int             times_eating;
     struct timeval  *time_start;
     pthread_mutex_t **left;
@@ -25,8 +25,8 @@ typedef struct      t_data
 {
     int             philo_nb;
     int             nb_eat;
-    pthread_t       *thread;
-    struct timeval  *last_meat;
+    pthread_t       thread;
+    struct timeval  last_meat;
     s_stats         *stats;
     void            *next;
 }                   s_data;
@@ -41,7 +41,9 @@ typedef struct      t_philo
 void	msg_write(char *msg);
 void    console_info(int x, char *str);
 int     eat(s_data *philo);
-int     a_philo_has_born (s_stats *stats);
+int     a_philo_has_born (s_stats *stats, s_data *philo, int x);
 void	ft_putnbr_fd(int n, int fd);
 int     free_stats(s_stats *stats);
+int     free_philo(s_data *philo);
+int     ask_if_alive(s_data *philo);
 #endif
