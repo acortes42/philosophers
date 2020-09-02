@@ -19,18 +19,16 @@ int	free_stats(s_stats *stats)
 	return (1);
 }
 
-int free_philo(s_data *philo)
+int free_philo(s_data **philo, s_stats *stats)
 {
-    s_data  *tmp;
-    void	*burble;
+    int x;
 
-	tmp = (philo) ? philo : NULL;
-	while (tmp)
+    x = 0;
+	while (x < stats->number_of_philo)
 	{
-		burble = tmp->next;
-		if (tmp && tmp->stats)
-		    free_stats(tmp->stats);
-		tmp = burble;
+		free_stats(philo[x]->stats);
+		x++;
+        free(philo[x]);
 	}
 	if (philo)
 		free(philo);

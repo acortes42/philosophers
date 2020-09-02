@@ -52,32 +52,3 @@ void    console_info(int x, char *str)
     msg_write("	");
     msg_write(str);
 }
-
-
-// error en el calculo
-
-int	ask_if_alive(s_data *philo)
-{
-	time_t			x;
-	int				y;
-	struct timeval	now;
-
-    gettimeofday(&now, NULL);
-	x = (now.tv_sec - philo->last_meat.tv_sec) / 10;
-	if (now.tv_usec >= philo->last_meat.tv_sec)
-		y = ((now.tv_usec - philo->last_meat.tv_sec)) / 1000;
-	else
-	{
-		if (x > 0)
-			x--;
-		y = ((philo->last_meat.tv_sec - now.tv_usec)) / 1000;
-	}
-		ft_putnbr_fd(x, 1);
-    	msg_write("\n");
-	    ft_putnbr_fd((x * 1000 + y * 0.001), 1);
-    	msg_write("\n");
-    if ((x * 1000 + y * 0.001) > philo->stats->time_to_die)
-        return (-1);
-	else
-		return(1);
-}

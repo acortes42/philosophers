@@ -27,6 +27,7 @@ SRCS			=	srcs/eat_or_die.c \
 					srcs/utils.c \
 					srcs/philo_creator.c \
 					srcs/anti_leaks.c \
+					srcs/time_logic.c \
 					srcs/main.c 
 
 # COMPILED_SOURCES #

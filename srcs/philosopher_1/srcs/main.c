@@ -46,21 +46,23 @@ int init_stats(int argc, char **argv, s_stats *stats)
 int     main(int argc, char **argv)
 {
     s_stats         *stats;
-    s_data          *philo;
+    s_data          **philo;
     int             x;
 
     x  = 0;
     if (!(stats = malloc(sizeof(s_stats))) || init_stats(argc, argv, stats) < 0 ||
-            !(philo = malloc(sizeof(s_data))))
+            !(philo = malloc(sizeof(s_data *))))
         return (-1);
-    while (x++ < stats->number_of_philo)
+    while (x < stats->number_of_philo)
     {
+        philo[x] = malloc(sizeof(s_data));
         a_philo_has_born(stats, philo, x);
+        x++;
     }
-    if (philo->philo_nb == philo->stats->number_of_philo)
-        pthread_join(philo->thread, NULL);
+    if (philo[x]->philo_nb == stats->number_of_philo)
+        pthread_join(philo[x]->thread, NULL);
     msg_write("END\n");
     free_stats(stats);
-    free_philo(philo);
+    free_philo(philo, stats);
     system("leaks");
 }

@@ -6,19 +6,15 @@
 
 int     go_sleep(s_data *philo)
 {
-    struct timeval      start;
-    struct timeval      now;
+    struct timeval  start;
 
     console_info(philo->philo_nb, "is sleeping\n");
     gettimeofday(&start, NULL);
     while (1)
     {
-        gettimeofday(&now, NULL);
-        if (((((now.tv_sec - start.tv_sec) * 1000) + ((now.tv_usec - start.tv_usec) * 0.001)))
-                > philo->stats->time_sleeping)
+        if (now_vs_old_time(start) > philo->stats->time_sleeping)
             break;
-       if ((((now.tv_sec - philo->last_meat.tv_sec) * 1000) + ((now.tv_usec - philo->last_meat.tv_usec) * 0.001))
-                > philo->stats->time_to_die)
+        if (now_vs_old_time(philo->last_meat) > philo->stats->time_to_die)
             return (-1);
     }
     return (1);
@@ -61,14 +57,13 @@ void    *summon_a_philo(void *args)
     return (NULL);
 }
 
-int     a_philo_has_born (s_stats *stats, s_data *philo, int x)
+int     a_philo_has_born (s_stats *stats, s_data **philo, int x)
 {
-    philo->philo_nb = x;
-    philo->nb_eat = 0;
-    philo->stats = stats;
-    gettimeofday(&philo->last_meat, NULL);
-    pthread_create(&philo->thread, NULL, &summon_a_philo, philo);
+    philo[x]->philo_nb = x + 1;
+    philo[x]->nb_eat = 0;
+    philo[x]->stats = stats;
+    gettimeofday(&philo[x]->last_meat, NULL);
+    pthread_create(&philo[x]->thread, NULL, &summon_a_philo, philo[x]);
     usleep(1000000);
-    philo = philo->next;
     return (1);
 }

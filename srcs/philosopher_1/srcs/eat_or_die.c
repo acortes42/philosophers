@@ -3,7 +3,7 @@
 //Debería dar problemas si muere mientras busca un tenedor y estoy casi seguro que el
 //planteamiento de los mutex tiene un error por no estar todos mirando al mismo sitio.
 
-// Parece que hay errores en el acceso al mutex
+// Parece que hay errores en el acceso al mutex, pensar otro planteamiento mejor
 
 int     fight_for_forks(s_data *philo)
 {
@@ -16,8 +16,8 @@ int     fight_for_forks(s_data *philo)
     console_info(philo->philo_nb, "want to take a fork\n");
     if (flag == 1)
     {
-        pthread_mutex_lock(philo->stats->right[philo->philo_nb - 1]);
         pthread_mutex_lock(philo->stats->right[philo->philo_nb - 2]);
+        pthread_mutex_lock(philo->stats->right[philo->philo_nb - 1]);
         pthread_mutex_lock(philo->stats->left[philo->philo_nb - 1]);
         pthread_mutex_lock(philo->stats->left[0]);
          msg_write("flag 1 running\n");
@@ -32,7 +32,7 @@ int     fight_for_forks(s_data *philo)
     }
     else
     {
-        pthread_mutex_lock(philo->stats->right[philo->philo_nb]);
+        pthread_mutex_lock(philo->stats->right[philo->philo_nb - 2]);
         pthread_mutex_lock(philo->stats->right[philo->philo_nb - 1]);
         pthread_mutex_lock(philo->stats->left[philo->philo_nb - 1]);
         pthread_mutex_lock(philo->stats->left[philo->philo_nb]);
@@ -46,11 +46,9 @@ int     fight_for_forks(s_data *philo)
 int     start_eating(s_data *philo)
 {
     struct timeval  now;
-    long            x;
 
     gettimeofday(&now, NULL);
-    x = philo->last_meat.tv_sec * 1000 + philo->last_meat.tv_usec * 0.001;
-    if (((now.tv_sec * 1000 + now.tv_usec * 0.001) - x) < philo->stats->time_to_die)
+    if (now_vs_old_time(philo->last_meat) < philo->stats->time_to_die)
     {
         philo->last_meat = now;
         usleep(philo->stats->time_eating * 1000);
@@ -66,12 +64,12 @@ int     return_forks(s_data *philo)
     int     flag;
 
     flag = philo->philo_nb == philo->stats->number_of_philo ? 1 : 0;
-    flag = philo->philo_nb == 0 ? 2 : flag;
+    flag = philo->philo_nb == 1 ? 2 : flag;
     console_info(philo->philo_nb, "want to return the forks\n");
     if (flag == 1)
     {
-        pthread_mutex_unlock(philo->stats->right[philo->philo_nb - 1]);
         pthread_mutex_unlock(philo->stats->right[philo->philo_nb - 2]);
+        pthread_mutex_unlock(philo->stats->right[philo->philo_nb - 1]);
         pthread_mutex_unlock(philo->stats->left[philo->philo_nb - 1]);
         pthread_mutex_unlock(philo->stats->left[0]);
     }
@@ -84,7 +82,7 @@ int     return_forks(s_data *philo)
     }
     else
     {
-        pthread_mutex_unlock(philo->stats->right[philo->philo_nb]);
+        pthread_mutex_unlock(philo->stats->right[philo->philo_nb - 2]);
         pthread_mutex_unlock(philo->stats->right[philo->philo_nb - 1]);
         pthread_mutex_unlock(philo->stats->left[philo->philo_nb - 1]);
         pthread_mutex_unlock(philo->stats->left[philo->philo_nb]);
