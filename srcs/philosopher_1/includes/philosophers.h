@@ -8,6 +8,11 @@
 # include <pthread.h>
 # include <string.h>
 
+typedef struct      t_fork
+{
+    pthread_mutex_t *fork_left;
+    pthread_mutex_t *fork_right;
+}                   s_fork;
 
 typedef struct      t_stats
 {
@@ -16,9 +21,12 @@ typedef struct      t_stats
     long            time_eating;
     long            time_sleeping;
     int             times_eating;
+    int             end_of_philo;
     struct timeval  *time_start;
-    pthread_mutex_t **left;
-    pthread_mutex_t **right;
+    pthread_mutex_t *intention;
+    pthread_mutex_t *fork_left;
+    pthread_mutex_t *fork_right;
+    pthread_mutex_t write_fd_1;
 }                   s_stats;
 
 typedef struct      t_data
@@ -38,7 +46,7 @@ typedef struct      t_philo
 }                   s_philo;
 
 void	msg_write(char *msg);
-void    console_info(int x, char *str);
+void    console_info(int x, char *str, pthread_mutex_t mutex);
 int     eat(s_data *philo);
 int     a_philo_has_born (s_stats *stats, s_data **philo, int x);
 void	ft_putnbr_fd(int n, int fd);

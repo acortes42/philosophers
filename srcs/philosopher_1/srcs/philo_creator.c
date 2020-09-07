@@ -8,7 +8,7 @@ int     go_sleep(s_data *philo)
 {
     struct timeval  start;
 
-    console_info(philo->philo_nb, "is sleeping\n");
+    console_info(philo->philo_nb, "is sleeping\n", philo->stats->write_fd_1);
     gettimeofday(&start, NULL);
     while (1)
     {
@@ -22,7 +22,7 @@ int     go_sleep(s_data *philo)
 
 int     awake_to_think(s_data *philo)
 {
-    console_info(philo->philo_nb, "is thinking\n");
+    console_info(philo->philo_nb, "is thinking\n", philo->stats->write_fd_1);
     return (1);
 }
 
@@ -33,12 +33,10 @@ int     breathing(s_data  *philo)
         if (go_sleep(philo) <= 0)
             return (-1);
         awake_to_think(philo);
-        console_info(philo->philo_nb, "CORRECT \n");
         return (1);
     }
     else
     {
-        console_info(philo->philo_nb, " >>>>HERE \n");
         return (-1);
     }
     return (1);
@@ -50,10 +48,13 @@ void    *summon_a_philo(void *args)
 {
     s_data  *philo;
 
+    philo = malloc(sizeof(s_data*));
     philo = (s_data*)args;
-    while (breathing(philo) > 0)
+    while (breathing((philo)) > 0)
         NULL;
-    console_info(philo->philo_nb, " died\n");
+    console_info(philo->philo_nb, " died\n", philo->stats->write_fd_1);
+    philo->stats->end_of_philo = 0;
+    //free(philo);
     return (NULL);
 }
 

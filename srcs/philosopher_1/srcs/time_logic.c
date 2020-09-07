@@ -16,10 +16,6 @@ int now_vs_old_time(struct timeval old)
 			x--;
 		y = ((old.tv_sec - now.tv_usec)) / 1000;
 	}
-    	ft_putnbr_fd(x, 1);
-    	msg_write("\n");
-	    ft_putnbr_fd((x * 1000 + y * 0.001), 1);
-    	msg_write("\n");
     return (x * 1000 + y * 0.001);
 }
 

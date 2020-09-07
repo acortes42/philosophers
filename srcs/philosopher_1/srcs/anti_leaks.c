@@ -7,15 +7,18 @@ int	free_stats(s_stats *stats)
 	x = 0;
 	while (x < stats->number_of_philo)
 	{
-        pthread_mutex_destroy(stats->left[x]);
-        pthread_mutex_destroy(stats->right[x]);
-		free(stats->left[x]);
-		free(stats->right[x]);
+		if (&stats->fork_left[x])
+        	pthread_mutex_destroy(&stats->fork_left[x]);
+		if (&stats->fork_right[x])
+        	pthread_mutex_destroy(&stats->fork_right[x]);
 		x++;
 	}
-	free(stats->left);
-	free(stats->right);
-	free(stats);
+	if (stats->fork_left)
+		free(stats->fork_left);
+	if (stats->fork_right)
+		free(stats->fork_right);
+	if (stats)
+		free(stats);
 	return (1);
 }
 
@@ -27,8 +30,9 @@ int free_philo(s_data **philo, s_stats *stats)
 	while (x < stats->number_of_philo)
 	{
 		free_stats(philo[x]->stats);
+		if (philo[x])
+        	free(philo[x]);
 		x++;
-        free(philo[x]);
 	}
 	if (philo)
 		free(philo);

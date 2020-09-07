@@ -52,7 +52,7 @@ $(NAME):		$(OBJS) includes/philosophers.h
 		@$(CC) $(CC_FLAGS) $(SRCS) -lpthread -o ${NAME}
 
 test:	
-	@$(CC) $(CC_FLAGS) $(SRCS) -lpthread && ./a.out 4 8000 500 1000 9
+	@$(CC) $(CC_FLAGS) $(SRCS) -lpthread && ./a.out 4 8000 168 255 500
 test_unsec:	
 	@$(CC) $(SRCS) -lpthread && ./a.out 4 50000 3255 1000
 

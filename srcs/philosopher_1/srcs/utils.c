@@ -41,14 +41,19 @@ void	msg_write(char *msg)
 	write(1, msg, ft_strlen(msg));
 }
 
-void    console_info(int x, char *str)
+void    console_info(int x, char *str, pthread_mutex_t mutex)
 {
  	struct timeval now;
 
+	pthread_mutex_lock(&mutex);
     gettimeofday(&now, NULL); 
-    ft_putnbr_fd((now.tv_sec + now.tv_usec * 0.001), 1);
-    msg_write("	");
+	printf("%ld", now.tv_sec); 
+	printf("%ld %d %s", (long int)(/*now.tv_sec * 1000 + */now.tv_usec * 0.001), x, str);
+	usleep(100);
+    /*msg_write(" ");
     ft_putnbr_fd(x, 1);
-    msg_write("	");
-    msg_write(str);
+	usleep(100);
+    msg_write(" ");
+    msg_write(str);*/
+	pthread_mutex_unlock(&mutex);
 }
