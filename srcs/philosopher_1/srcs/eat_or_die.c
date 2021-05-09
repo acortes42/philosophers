@@ -1,84 +1,21 @@
 #include "../includes/philosophers.h"
 
-//Debería dar problemas si muere mientras busca un tenedor y estoy casi seguro que el
-//planteamiento de los mutex tiene un error por no estar todos mirando al mismo sitio.
-
-// Problema cuando dos fork se bloquean entre ellos
-
-int     secured_lock (s_data *philo, int flag)
-{
-    console_info(philo->philo_nb, "impar\n", philo->stats->write_fd_1);
-        if (flag == 1)
-        {
-            pthread_mutex_lock(&philo->stats->fork_right[philo->philo_nb - 2]);
-            console_info(philo->philo_nb, "has taken right fork\n", philo->stats->write_fd_1);
-            pthread_mutex_lock(&philo->stats->fork_left[0]);
-            console_info(philo->philo_nb, "has taken left fork\n", philo->stats->write_fd_1);
-            pthread_mutex_lock(&philo->stats->fork_right[philo->philo_nb - 1]);
-            pthread_mutex_lock(&philo->stats->fork_left[philo->philo_nb - 1]);
-        }
-        else if (flag == 2)
-        {
-            pthread_mutex_lock(&philo->stats->fork_right[philo->stats->number_of_philo - 1]);
-            console_info(philo->philo_nb, "has taken right fork\n", philo->stats->write_fd_1);
-            pthread_mutex_lock(&philo->stats->fork_left[philo->philo_nb]);
-            console_info(philo->philo_nb, "has taken left fork\n", philo->stats->write_fd_1);
-            pthread_mutex_lock(&philo->stats->fork_right[0]);
-            pthread_mutex_lock(&philo->stats->fork_left[0]);
-        }
-        else
-        {
-            pthread_mutex_lock(&philo->stats->fork_right[philo->philo_nb - 2]);
-            console_info(philo->philo_nb, "has taken right fork\n", philo->stats->write_fd_1);
-            pthread_mutex_lock(&philo->stats->fork_left[philo->philo_nb]);
-            console_info(philo->philo_nb, "has taken left fork\n", philo->stats->write_fd_1);
-            pthread_mutex_lock(&philo->stats->fork_right[philo->philo_nb - 1]);
-            pthread_mutex_lock(&philo->stats->fork_left[philo->philo_nb - 1]);
-        }
-        console_info(philo->philo_nb, "end fork\n", philo->stats->write_fd_1);
-        return (1);
-}
+//Cambiamos toda la logica de la pelea por los tenedores por refactorización del código
 
 int     fight_for_forks(s_data *philo)
 {
-    int     flag;
-
-    flag = philo->philo_nb == philo->stats->number_of_philo ? 1 : 0;
-    flag = philo->philo_nb == 1 ? 2 : flag;
-    if (ask_if_alive(philo) < 0) 
+    pthread_mutex_lock(&philo->stats->fork[philo->stats->value_lfork]);
+    if ((ft_tempo() - philo->program_timer) > philo->stats->time_to_die)
         return (-1);
-    if ((philo->philo_nb % 2) == 0)
-    {
-        console_info(philo->philo_nb, "par\n", philo->stats->write_fd_1);
-        if (flag == 1)
-        {
-            pthread_mutex_lock(&philo->stats->fork_right[philo->philo_nb - 1]);
-            pthread_mutex_lock(&philo->stats->fork_left[philo->philo_nb - 1]);
-            pthread_mutex_lock(&philo->stats->fork_left[0]);
-            console_info(philo->philo_nb, "has taken left fork\n", philo->stats->write_fd_1);
-            pthread_mutex_lock(&philo->stats->fork_right[philo->philo_nb - 2]);
-            console_info(philo->philo_nb, "has taken right fork\n", philo->stats->write_fd_1);
-        }
-    /*    else if (flag == 2)
-        {
-            pthread_mutex_lock(&philo->stats->fork_left[philo->philo_nb - 1]);
-            pthread_mutex_lock(&philo->stats->fork_right[philo->stats->number_of_philo - 1]);
-            pthread_mutex_lock(&philo->stats->fork_right[philo->philo_nb - 1]);
-            pthread_mutex_lock(&philo->stats->fork_left[philo->philo_nb]);
-        }*/
-        else
-        {
-            pthread_mutex_lock(&philo->stats->fork_left[philo->philo_nb - 1]);
-            pthread_mutex_lock(&philo->stats->fork_right[philo->philo_nb - 1]);
-            pthread_mutex_lock(&philo->stats->fork_left[philo->philo_nb]);
-            console_info(philo->philo_nb, "has taken left fork\n", philo->stats->write_fd_1);
-            pthread_mutex_lock(&philo->stats->fork_right[philo->philo_nb - 2]);
-            console_info(philo->philo_nb, "has taken right fork\n", philo->stats->write_fd_1);
-        }
-        console_info(philo->philo_nb, "end fork\n", philo->stats->write_fd_1);
-    }
-    else
-        secured_lock(philo, flag);
+    printf(_YELLOW);
+    console_info(philo->philo_nb, " has taken a fork\n", philo->stats->write_fd_1, philo->stats->timer);
+    //aqui comprobamos que aún sigue vivo
+    pthread_mutex_lock(&philo->stats->fork[philo->stats->value_rfork]);
+    if ((ft_tempo() - philo->program_timer) > philo->stats->time_to_die)
+        return (-1);
+    printf(_YELLOW);
+    console_info(philo->philo_nb, " has taken a fork\n", philo->stats->write_fd_1, philo->stats->timer);
+    //aqui comprobamos que aún sigue vivo...otra vez
     return (1);
 }
 
@@ -86,51 +23,28 @@ int     fight_for_forks(s_data *philo)
 
 int     start_eating(s_data *philo)
 {
-    struct timeval  now;
-
-    gettimeofday(&now, NULL);
-    console_info(philo->philo_nb, " is eating\n", philo->stats->write_fd_1);
-    if (now_vs_old_time(philo->last_meat) < philo->stats->time_to_die)
-    {
-        philo->last_meat = now;
-        usleep(philo->stats->time_eating * 1000);
-    }
-    else
-        return (-1);
+    printf(_GREEN);
+    console_info(philo->philo_nb, " is eating\n", philo->stats->write_fd_1, philo->stats->timer);
+    //ya hemos comprobado que aún vive cuando ha cogido el último tenedor, por lo que es innecesaria otra comprovación de ello
+    
+    //aqui vemos si tenemos que usar un mutex para comer
+    usleep(philo->stats->time_eating * 1000);
     philo->nb_eat++;
+    //aqui le asignamos valor a tempos para decirle que ya ha cómido y que, por ahora, no va a morir.
+    //y aqui, si hemos creado mutex para comer, lo liberamos.
     return (1);
 }
 
 int     return_forks(s_data *philo)
 {
-    int     flag;
-
-    flag = philo->philo_nb == philo->stats->number_of_philo ? 1 : 0;
-    flag = philo->philo_nb == 1 ? 2 : flag;
-    if (flag == 1)
-    {
-        pthread_mutex_unlock(&philo->stats->fork_left[philo->philo_nb - 1]);
-        pthread_mutex_unlock(&philo->stats->fork_right[philo->philo_nb - 1]);
-        pthread_mutex_unlock(&philo->stats->fork_left[0]);
-        pthread_mutex_unlock(&philo->stats->fork_right[philo->philo_nb - 2]);
-    }
-    else if (flag == 2)
-    {
-        pthread_mutex_unlock(&philo->stats->fork_left[philo->philo_nb - 1]);
-        pthread_mutex_unlock(&philo->stats->fork_right[philo->philo_nb - 1]);
-        pthread_mutex_unlock(&philo->stats->fork_left[philo->philo_nb]);
-        pthread_mutex_unlock(&philo->stats->fork_right[philo->stats->number_of_philo - 1]);
-    }
-    else
-    {
-        pthread_mutex_unlock(&philo->stats->fork_left[philo->philo_nb - 1]);
-        pthread_mutex_unlock(&philo->stats->fork_right[philo->philo_nb - 1]);
-        pthread_mutex_unlock(&philo->stats->fork_left[philo->philo_nb]);
-        pthread_mutex_unlock(&philo->stats->fork_right[philo->philo_nb - 2]);
-    }
-    console_info(philo->philo_nb, " return a fork\n", philo->stats->write_fd_1);
+    printf(_CYAN);
+    console_info(philo->philo_nb, " return fork\n", philo->stats->write_fd_1, philo->stats->timer);
+    pthread_mutex_unlock(&philo->stats->fork[philo->stats->value_lfork]);
+    pthread_mutex_unlock(&philo->stats->fork[philo->stats->value_rfork]);
+    console_info(philo->philo_nb, " real returned fork\n", philo->stats->write_fd_1, philo->stats->timer);
     return (1);
 }
+
 
 int     eat(s_data *philo)
 {
@@ -139,6 +53,7 @@ int     eat(s_data *philo)
             return (-1);
     if (fight_for_forks(philo) < 0 || start_eating(philo) < 0)
         return (-1);
+    philo->program_timer = ft_tempo();
     return_forks(philo);
     return (1);
 }

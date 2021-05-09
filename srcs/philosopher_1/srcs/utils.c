@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/09 14:54:26 by acortes-          #+#    #+#             */
+/*   Updated: 2021/05/09 15:53:18 by acortes-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philosophers.h"
 
-    //mensaje temporal a falta de elaborado
 size_t	ft_strlen(const char *s)
 {
 	size_t	n;
@@ -41,19 +52,12 @@ void	msg_write(char *msg)
 	write(1, msg, ft_strlen(msg));
 }
 
-void    console_info(int x, char *str, pthread_mutex_t mutex)
+void    console_info(int x, char *str, pthread_mutex_t mutex, int timer)
 {
- 	struct timeval now;
+	int tmp;
 
 	pthread_mutex_lock(&mutex);
-    gettimeofday(&now, NULL); 
-	printf("%ld", now.tv_sec); 
-	printf("%ld %d %s", (long int)(/*now.tv_sec * 1000 + */now.tv_usec * 0.001), x, str);
-	usleep(100);
-    /*msg_write(" ");
-    ft_putnbr_fd(x, 1);
-	usleep(100);
-    msg_write(" ");
-    msg_write(str);*/
+	tmp = ft_tempo();
+	printf("%d %d %s", tmp - timer, x, str);
 	pthread_mutex_unlock(&mutex);
 }

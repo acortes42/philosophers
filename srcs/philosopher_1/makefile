@@ -6,7 +6,7 @@
 
 CC			=	gcc
 
-CC_FLAGS	=	-Wall -Wextra -Werror
+CC_FLAGS	=	-Wall -Wextra -Werror -fsanitize=address
 
 
 # DELETE #
@@ -64,6 +64,7 @@ clean:
 
 fclean:			clean
 				@$(RM) $(NAME)
+				@ *.out
 				@echo "$(_RED) '"$(NAME)"' has been deleted.🗑️"
 
 re:				fclean all
