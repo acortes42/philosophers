@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2021/05/09 16:02:13 by acortes-         ###   ########.fr       */
+/*   Updated: 2021/05/09 16:44:28 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,9 @@ int     main(int argc, char **argv)
         x++;
     }
     while (stats->end_of_philo > 0) 
-        usleep(100000);
+        ;
     msg_write("END\n");
+    x = 0;
     ft_free_all(*philo);
     if (philo)
         free(philo);

@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:52 by acortes-          #+#    #+#             */
-/*   Updated: 2021/05/09 15:48:15 by acortes-         ###   ########.fr       */
+/*   Updated: 2021/05/09 16:45:17 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int     go_sleep(s_data *philo)
     else
     {
         usleep(philo->stats->time_to_die * 1000);
-        return (0);
+        return (-1);
     }
     return (1);
 }

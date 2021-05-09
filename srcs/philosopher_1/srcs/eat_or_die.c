@@ -38,10 +38,8 @@ int     start_eating(s_data *philo)
 int     return_forks(s_data *philo)
 {
     printf(_CYAN);
-    console_info(philo->philo_nb, " return fork\n", philo->stats->write_fd_1, philo->stats->timer);
     pthread_mutex_unlock(&philo->stats->fork[philo->stats->value_lfork]);
     pthread_mutex_unlock(&philo->stats->fork[philo->stats->value_rfork]);
-    console_info(philo->philo_nb, " real returned fork\n", philo->stats->write_fd_1, philo->stats->timer);
     return (1);
 }
 
