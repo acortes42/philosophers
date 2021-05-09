@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2021/05/09 16:44:28 by acortes-         ###   ########.fr       */
+/*   Updated: 2021/05/09 17:18:26 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,11 @@ int init_stats(int argc, char **argv, s_stats *stats)
     x = 0;
     if (argc < 4)
         return (0);
-    ft_change_to_int(argv[1], (long *)&stats->number_of_philo);
-    ft_change_to_int(argv[2], &stats->time_to_die);
-    ft_change_to_int(argv[3], &stats->time_eating);
-    ft_change_to_int(argv[4], &stats->time_sleeping);
+    if (ft_change_to_int(argv[1], (long *)&stats->number_of_philo) == -1 || 
+        ft_change_to_int(argv[2], &stats->time_to_die) == -1 || ft_change_to_int(argv[3], &stats->time_eating) || 
+        ft_change_to_int(argv[4], &stats->time_sleeping))
+        return (0);
+
     stats->timer = ft_tempo();
     if (!(stats->fork = malloc(sizeof(pthread_mutex_t) * stats->number_of_philo)))
         return (-1);
@@ -111,9 +112,18 @@ int     main(int argc, char **argv)
     x  = 0;
     if (ft_test_arguments(argc, argv) == 1)
         return (1);
-    if (!(stats = malloc(sizeof(s_stats))) || init_stats(argc, argv, stats) < 0 ||
-            !(philo = malloc(sizeof(s_data *) * stats->number_of_philo)))
-        return (-1);
+    if (!(stats = malloc(sizeof(s_stats))))
+        return (1);
+    if (init_stats(argc, argv, stats) <= 0)
+    {
+        free(stats);
+        return (1);
+    }
+    if (!(philo = malloc(sizeof(s_data *) * stats->number_of_philo)))
+    {
+        free(stats);
+        return (1);
+    }
     stats->end_of_philo = 42;
     while (x < stats->number_of_philo)
     {
@@ -123,6 +133,12 @@ int     main(int argc, char **argv)
     }
     while (stats->end_of_philo > 0) 
         ;
+    x = 0;
+    while (x < stats->number_of_philo)
+    {
+        pthread_join(philo[x]->thread, NULL);
+        x++;
+    }
     msg_write("END\n");
     x = 0;
     ft_free_all(*philo);
@@ -132,3 +148,8 @@ int     main(int argc, char **argv)
         free(stats);
     return (1);
 }
+
+/*
+    Igual debo hacer algo con lo que se pierde en multihilo. Que sinceramente no se donde se va. (Y creo que provoca uno
+        o dos leaks)
+*/
