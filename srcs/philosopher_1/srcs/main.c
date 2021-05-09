@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2021/05/09 17:18:26 by acortes-         ###   ########.fr       */
+/*   Updated: 2021/05/09 19:40:36 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int				ft_change_to_int(char *str, long *nb)
 		return (-1);
     if (ft_strlen(str) > 7)
     {
-        printf(_RED"Is this a buffer overflow?\n");
+        printf(_RED"Hey, use lower numbers\n");
         return (-1);
     }
 	*nb = 0;
@@ -45,15 +45,16 @@ int init_stats(int argc, char **argv, s_stats *stats)
     if (!(stats->fork = malloc(sizeof(pthread_mutex_t) * stats->number_of_philo)))
         return (-1);
     if (argv[5])
-        ft_change_to_int(argv[5],(long *)&stats->times_eating);
+    {
+        if (ft_change_to_int(argv[5],(long *)&stats->times_eating) == -1)
+            return (0);
+    }
     else
         stats->times_eating = -1;
     
     while (x < stats->number_of_philo)
     {
         pthread_mutex_init(&stats->fork[x], NULL);
-        stats->value_lfork = x;
-        stats->value_rfork = (x + 1) % stats->number_of_philo;
         x++;
     }
     pthread_mutex_init(&stats->write_fd_1 , NULL);
@@ -136,7 +137,7 @@ int     main(int argc, char **argv)
     x = 0;
     while (x < stats->number_of_philo)
     {
-        pthread_join(philo[x]->thread, NULL);
+        usleep(1000);
         x++;
     }
     msg_write("END\n");
