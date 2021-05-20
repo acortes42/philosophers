@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:52 by acortes-          #+#    #+#             */
-/*   Updated: 2021/05/09 19:12:49 by acortes-         ###   ########.fr       */
+/*   Updated: 2021/05/20 16:55:32 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,24 +47,30 @@ void    *summon_a_philo(void *args)
 {
     s_data  *philo;
 
-    philo = malloc(sizeof(s_data*));
     philo = (s_data*)args;
     printf(_MAGENTA);
     philo->program_timer = ft_tempo();
     while (breathing((philo)) > 0)
         NULL;
     if (philo->stats->end_of_philo <= 0)
+    {
+        if (philo)
+            free(philo);
         return (NULL);
+    }
     if (philo->stats->times_eating > 0 && philo->nb_eat >= philo->stats->times_eating)
     {
         console_info(philo->philo_nb, " survive the festival\n", philo->stats->write_fd_1, philo->stats->timer);
         philo->stats->end_of_philo = 0;
+        if (philo)
+            free(philo);
         return (NULL);
     }
     printf(_RED);
     console_info(philo->stats->number_of_philo, " died\n", philo->stats->write_fd_1, philo->stats->timer);
     philo->stats->end_of_philo = 0;
-   // free(philo);
+    if (philo)
+        free(philo);
     return (NULL);
 }
 
@@ -75,7 +81,6 @@ int     a_philo_has_born (s_stats *stats, s_data **philo, int x)
     philo[x]->stats = stats;
     philo[x]->stats->value_lfork = x;
     philo[x]->stats->value_rfork = (x + 1) % stats->number_of_philo;
-    pthread_create(&philo[x]->thread, NULL, &summon_a_philo, philo[x]);
-    usleep(10000);
+   // pthread_create(&philo[x]->thread, NULL, &summon_a_philo, philo[x]);
     return (1);
 }

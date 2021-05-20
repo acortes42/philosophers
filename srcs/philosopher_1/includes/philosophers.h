@@ -53,10 +53,10 @@ void    console_info(int x, char *str, pthread_mutex_t mutex, int timer);
 int     eat(s_data *philo);
 int     a_philo_has_born (s_stats *stats, s_data **philo, int x);
 void	ft_putnbr_fd(int n, int fd);
-int     ft_free_all(s_data *philo);
 int     free_philo(s_data **philo, s_stats *stats);
 int     now_vs_old_time(struct timeval old);
 int		ft_tempo();
+void    *summon_a_philo(void *args);
 size_t	ft_strlen(const char *s);
 
 #endif

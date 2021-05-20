@@ -6,13 +6,13 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2021/05/09 19:40:36 by acortes-         ###   ########.fr       */
+/*   Updated: 2021/05/20 19:48:05 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-int				ft_change_to_int(char *str, long *nb)
+int ft_change_to_int(char *str, long *nb)
 {
 	if (*str == '\0')
 		return (-1);
@@ -31,16 +31,21 @@ int				ft_change_to_int(char *str, long *nb)
 
 int init_stats(int argc, char **argv, s_stats *stats)
 {
-    int     x;
+    int x;
 
     x = 0;
     if (argc < 4)
         return (0);
-    if (ft_change_to_int(argv[1], (long *)&stats->number_of_philo) == -1 || 
-        ft_change_to_int(argv[2], &stats->time_to_die) == -1 || ft_change_to_int(argv[3], &stats->time_eating) || 
+    if (ft_change_to_int(argv[1], (long *)&stats->number_of_philo) == -1 ||
+        ft_change_to_int(argv[2], &stats->time_to_die) == -1 ||
+        ft_change_to_int(argv[3], &stats->time_eating) ||
         ft_change_to_int(argv[4], &stats->time_sleeping))
         return (0);
-
+    if (stats->number_of_philo > 500)
+    {
+        printf("The max number the philosophers is 500\n");
+        return (0);
+    }
     stats->timer = ft_tempo();
     if (!(stats->fork = malloc(sizeof(pthread_mutex_t) * stats->number_of_philo)))
         return (-1);
@@ -110,47 +115,46 @@ int     main(int argc, char **argv)
     s_data          **philo;
     int             x;
 
-    x  = 0;
-    if (ft_test_arguments(argc, argv) == 1)
-        return (1);
-    if (!(stats = malloc(sizeof(s_stats))))
+    x  = -1;
+    stats = malloc(sizeof(s_stats));
+    if (ft_test_arguments(argc, argv) == 1 || !(stats))
         return (1);
     if (init_stats(argc, argv, stats) <= 0)
     {
         free(stats);
         return (1);
     }
-    if (!(philo = malloc(sizeof(s_data *) * stats->number_of_philo)))
+    philo = malloc(sizeof(s_data *) * stats->number_of_philo);
+    if (!(philo))
     {
         free(stats);
         return (1);
     }
     stats->end_of_philo = 42;
-    while (x < stats->number_of_philo)
+    while (++x < stats->number_of_philo)
     {
         philo[x] = malloc(sizeof(s_data));
         a_philo_has_born(stats, philo, x);
-        x++;
     }
+    x = -1;
+    while (++x < stats->number_of_philo)
+        pthread_create(&philo[x]->thread, NULL, &summon_a_philo, philo[x]);
     while (stats->end_of_philo > 0) 
-        ;
-    x = 0;
-    while (x < stats->number_of_philo)
-    {
-        usleep(1000);
-        x++;
-    }
+        usleep(100);
+    x = -1;
+    while (++x < stats->number_of_philo)
+        pthread_join(philo[x]->thread, NULL);
     msg_write("END\n");
-    x = 0;
-    ft_free_all(*philo);
-    if (philo)
-        free(philo);
-    if (stats)
-        free(stats);
+    x = -1;
+	while (++x < stats->number_of_philo)
+		pthread_mutex_destroy(&stats->fork[x]);
+	free(stats->fork);
+	pthread_mutex_destroy(&stats->write_fd_1);
+    free(philo);
+    free(stats);
     return (1);
 }
 
 /*
-    Igual debo hacer algo con lo que se pierde en multihilo. Que sinceramente no se donde se va. (Y creo que provoca uno
-        o dos leaks)
+    Hay bastantes leaks a tratar
 */

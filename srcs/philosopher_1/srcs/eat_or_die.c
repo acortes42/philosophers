@@ -6,22 +6,24 @@ int     fight_for_forks(s_data *philo)
 {
     if (philo->stats->end_of_philo <= 0)
         return (-1);
-    pthread_mutex_lock(&philo->stats->fork[philo->stats->value_lfork]);
     if ((ft_tempo() - philo->program_timer) > philo->stats->time_to_die)
-    {
+        return (-1);
+    pthread_mutex_lock(&philo->stats->fork[philo->stats->value_lfork]);
+   /* if ((ft_tempo() - philo->program_timer) > philo->stats->time_to_die)
+    {   
         pthread_mutex_unlock(&philo->stats->fork[philo->stats->value_lfork]);
         return (-1);
-    }
+    }*/
     printf(_YELLOW);
     if (philo->stats->end_of_philo > 0)
         console_info(philo->philo_nb, " has taken a fork\n", philo->stats->write_fd_1, philo->stats->timer);
     pthread_mutex_lock(&philo->stats->fork[philo->stats->value_rfork]);
-    if ((ft_tempo() - philo->program_timer) > philo->stats->time_to_die)
+  /*  if ((ft_tempo() - philo->program_timer) > philo->stats->time_to_die)
     {
          pthread_mutex_unlock(&philo->stats->fork[philo->stats->value_lfork]);
         pthread_mutex_unlock(&philo->stats->fork[philo->stats->value_rfork]);
         return (-1);
-    }
+    }*/
     printf(_YELLOW);
     if (philo->stats->end_of_philo > 0)
         console_info(philo->philo_nb, " has taken a fork\n", philo->stats->write_fd_1, philo->stats->timer);
@@ -33,13 +35,11 @@ int     fight_for_forks(s_data *philo)
 int     start_eating(s_data *philo)
 {
     printf(_GREEN);
-    if (philo->stats->end_of_philo > 0) 
-        console_info(philo->philo_nb, " is eating\n", philo->stats->write_fd_1, philo->stats->timer);
-    //ya hemos comprobado que aún vive cuando ha cogido el último tenedor, por lo que es innecesaria otra comprovación de ello
-    
-    //aqui vemos si tenemos que usar un mutex para comer
     if (philo->stats->end_of_philo > 0)
+    {
+        console_info(philo->philo_nb, " is eating\n", philo->stats->write_fd_1, philo->stats->timer);
         usleep(philo->stats->time_eating * 1000);
+    }
     philo->nb_eat++;
     //aqui le asignamos valor a tempos para decirle que ya ha cómido y que, por ahora, no va a morir.
     //y aqui, si hemos creado mutex para comer, lo liberamos.

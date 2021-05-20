@@ -6,7 +6,7 @@
 
 CC			=	gcc
 
-CC_FLAGS	=	-Wall -Wextra -Werror -fsanitize=address
+CC_FLAGS	=	-Wall -Wextra -Werror
 
 
 # DELETE #
@@ -26,7 +26,6 @@ DIR_OBJS	=	./compiled_objs/
 SRCS			=	srcs/eat_or_die.c \
 					srcs/utils.c \
 					srcs/philo_creator.c \
-					srcs/anti_leaks.c \
 					srcs/time_logic.c \
 					srcs/main.c 
 
@@ -46,15 +45,15 @@ all:			$(NAME)
 # RULES #
 
 $(NAME):		$(OBJS) includes/philosophers.h
-		#@mkdir -p ${DIR_OBJS}
-		#@${CC} ${CFLAGS} -c ${SRCS} -lpthread
-		#@mv *.o compiled_objs
+		@mkdir -p ${DIR_OBJS}
+		@${CC} ${CFLAGS} -c ${SRCS}
+		@mv *.o compiled_objs
 		@$(CC) $(CC_FLAGS) $(SRCS) -lpthread -o ${NAME}
 
 test:	
-	@$(CC) $(CC_FLAGS) $(SRCS) -lpthread && ./a.out 4 8000 168 255 500
+	@$(CC) $(CC_FLAGS) $(SRCS) -lpthread -o ${NAME} && ./philo_one 6 13 123 13 10
 test_unsec:	
-	@$(CC) $(SRCS) -lpthread && ./a.out 4 50000 3255 1000
+	@$(CC) $(SRCS) -lpthread -o ${NAME} && ./a.out 5 50000 3255 1000
 
 # OBLIGATORY PART #
 
@@ -64,7 +63,7 @@ clean:
 
 fclean:			clean
 				@$(RM) $(NAME)
-				@ *.out
+				@$(RM) *.out
 				@echo "$(_RED) '"$(NAME)"' has been deleted.🗑️"
 
 re:				fclean all
