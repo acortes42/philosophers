@@ -27,7 +27,9 @@ typedef struct      t_stats
     int             value_lfork;
     int             value_rfork;
     int             timer;
+    int             program_timer;
     pthread_mutex_t *fork;
+    pthread_mutex_t life;
     //  pthread_mutex_t *eating;  Puede que tenga que usarlo para la lógica del ejercicio.
     pthread_mutex_t write_fd_1;
     }                   s_stats;
@@ -36,7 +38,6 @@ typedef struct      t_data
 {
     int             philo_nb;
     int             nb_eat;
-    int             program_timer;
     pthread_t       thread;
     s_stats         *stats;
 }                   s_data;

@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2021/05/20 19:48:05 by acortes-         ###   ########.fr       */
+/*   Updated: 2021/05/20 22:28:38 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 int ft_change_to_int(char *str, long *nb)
 {
-	if (*str == '\0')
-		return (-1);
-    if (ft_strlen(str) > 7)
+    int x;
+    
+    x = ft_strlen(str);
+    if (*str == '\0')
+        return (-1);
+    if (x > 7)
     {
         printf(_RED"Hey, use lower numbers\n");
         return (-1);
@@ -32,7 +35,7 @@ int ft_change_to_int(char *str, long *nb)
 int init_stats(int argc, char **argv, s_stats *stats)
 {
     int x;
-
+    
     x = 0;
     if (argc < 4)
         return (0);
@@ -46,7 +49,6 @@ int init_stats(int argc, char **argv, s_stats *stats)
         printf("The max number the philosophers is 500\n");
         return (0);
     }
-    stats->timer = ft_tempo();
     if (!(stats->fork = malloc(sizeof(pthread_mutex_t) * stats->number_of_philo)))
         return (-1);
     if (argv[5])
@@ -109,6 +111,45 @@ int ft_test_arguments(int argc, char **argv)
     return (0);
 }
 
+s_stats *ft_return_stats(int argc, char **argv)
+{
+    s_stats         *stats;
+    int             x;
+
+    x  = -1;
+    stats = malloc(sizeof(s_stats));
+    if (ft_test_arguments(argc, argv) == 1 || !(stats))
+        return (NULL);
+    if (init_stats(argc, argv, stats) <= 0)
+    {
+        free(stats);
+        return (NULL);
+    }
+    return (stats);
+}
+
+void *check_if_alive(void *args)
+{
+    s_data  *philo;
+
+    philo = (s_data*)args;
+    while (philo->stats->end_of_philo > 0 && philo->stats->times_eating > 0)
+    {
+        pthread_mutex_lock(&philo->stats->life);
+        if (((ft_tempo() - philo->stats->timer) > philo->stats->time_to_die))
+        {
+            printf(_RED);
+            console_info(philo->stats->number_of_philo, " died\n", philo->stats->write_fd_1, philo->stats->program_timer);
+            pthread_mutex_unlock(&philo->stats->life);
+            philo->stats->end_of_philo = 0;
+            return (NULL);
+        }
+        pthread_mutex_unlock(&philo->stats->life);
+        usleep(1000);
+    }
+    return (NULL);
+}
+
 int     main(int argc, char **argv)
 {
     s_stats         *stats;
@@ -116,14 +157,9 @@ int     main(int argc, char **argv)
     int             x;
 
     x  = -1;
-    stats = malloc(sizeof(s_stats));
-    if (ft_test_arguments(argc, argv) == 1 || !(stats))
+    stats = ft_return_stats(argc, argv);
+    if (!(stats))
         return (1);
-    if (init_stats(argc, argv, stats) <= 0)
-    {
-        free(stats);
-        return (1);
-    }
     philo = malloc(sizeof(s_data *) * stats->number_of_philo);
     if (!(philo))
     {
@@ -137,8 +173,14 @@ int     main(int argc, char **argv)
         a_philo_has_born(stats, philo, x);
     }
     x = -1;
+    stats->program_timer = ft_tempo();
     while (++x < stats->number_of_philo)
+    {
         pthread_create(&philo[x]->thread, NULL, &summon_a_philo, philo[x]);
+        pthread_detach(philo[x]->thread);
+        pthread_create(&philo[x]->thread, NULL, &check_if_alive, philo[x]);
+        usleep(1000);
+    }
     while (stats->end_of_philo > 0) 
         usleep(100);
     x = -1;
