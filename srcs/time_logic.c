@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:13 by adrian            #+#    #+#             */
-/*   Updated: 2021/07/24 22:44:58 by adrian           ###   ########.fr       */
+/*   Updated: 2021/07/24 23:44:54 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	init_stats(int argc, char **argv, t_stats *stats)
 {
 	int	x;
 
-	x = 0;
+	x = -1;
 	if (argc < 4 || to_int(argv[1], (long *)&stats->number_of_philo) == -1 || \
 		stats->number_of_philo >= 500 || to_int(argv[2], \
 		&stats->time_to_die) == -1 || \
@@ -82,15 +82,14 @@ int	init_stats(int argc, char **argv, t_stats *stats)
 	if (!(stats->fork))
 		return (-1);
 	if (argv[5])
+	{
 		if (to_int(argv[5], (long *)&stats->times_eating) == -1)
 			return (0);
+	}
 	else
 		stats->times_eating = -1;
-	while (x < stats->number_of_philo)
-	{
+	while (++x < stats->number_of_philo)
 		pthread_mutex_init(&stats->fork[x], NULL);
-		x++;
-	}
 	pthread_mutex_init(&stats->write_fd_1, NULL);
 	return (1);
 }
