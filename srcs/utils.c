@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:26 by acortes-          #+#    #+#             */
-/*   Updated: 2021/05/17 17:23:31 by acortes-         ###   ########.fr       */
+/*   Updated: 2021/07/24 22:45:21 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t	ft_strlen(const char *s)
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	int x;
+	int	x;
 
 	x = 0;
 	if (n == -2147483648)
@@ -47,14 +47,9 @@ void	ft_putnbr_fd(int n, int fd)
 	}
 }
 
-void	msg_write(char *msg)
+void	console_info(int x, char *str, pthread_mutex_t mutex, int timer)
 {
-	write(1, msg, ft_strlen(msg));
-}
-
-void    console_info(int x, char *str, pthread_mutex_t mutex, int timer)
-{
-	int tmp;
+	int	tmp;
 
 	pthread_mutex_lock(&mutex);
 	tmp = ft_tempo();

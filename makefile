@@ -50,11 +50,6 @@ $(NAME):		$(OBJS) includes/philosophers.h
 		@mv *.o compiled_objs
 		@$(CC) $(CC_FLAGS) $(SRCS) -lpthread -o ${NAME}
 
-test:	
-	@$(CC) $(CC_FLAGS) $(SRCS) -lpthread -o ${NAME} && ./philo_one 6 25 12 12 10
-test_unsec:	
-	@$(CC) $(SRCS) -lpthread -o ${NAME} && ./a.out 5 50000 3255 1000
-
 # OBLIGATORY PART #
 
 clean:
@@ -70,4 +65,4 @@ re:				fclean all
 
 # PHONY #
 
-.PHONY:			all clean fclean re test test_unsec
+.PHONY:			all clean fclean re

@@ -1,8 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   time_logic.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/24 21:59:13 by adrian            #+#    #+#             */
+/*   Updated: 2021/07/24 22:44:58 by adrian           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philosophers.h"
 
-// esto es legacy. Se puede sustituir por una función que nos 
-
-int		ft_tempo()
+int	ft_tempo(void)
 {
 	struct timeval	tv;
 	int				i;
@@ -10,4 +20,77 @@ int		ft_tempo()
 	gettimeofday(&tv, NULL);
 	i = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	return (i);
+}
+
+int	ft_test_arguments(int argc, char **argv)
+{
+	long	x;
+
+	x = 0;
+	if ((argc != 5 && argc != 6) || ft_process_argv(argv) == 1)
+	{
+		printf("Incorrect arguments\n");
+		return (1);
+	}
+	if (to_int(argv[1], &x) < 0)
+		return (1);
+	if (x < 1)
+	{
+		printf("No existence == No death\n");
+		return (1);
+	}
+	if (x == 1)
+	{
+		printf("Our philosopher only have one fork. Instakill.\n");
+		return (1);
+	}
+	return (0);
+}
+
+int	to_int(char *str, long *nb)
+{
+	int	x;
+
+	x = ft_strlen(str);
+	if (*str == '\0')
+		return (-1);
+	if (x > 7)
+	{
+		printf(_RED"Hey, use lower numbers\n");
+		return (-1);
+	}
+	*nb = 0;
+	while (*str && *str >= '0' && *str <= '9')
+		*nb = 10 * *nb + (*str++ - '0');
+	if (*str != '\0')
+		return (-1);
+	return (0);
+}
+
+int	init_stats(int argc, char **argv, t_stats *stats)
+{
+	int	x;
+
+	x = 0;
+	if (argc < 4 || to_int(argv[1], (long *)&stats->number_of_philo) == -1 || \
+		stats->number_of_philo >= 500 || to_int(argv[2], \
+		&stats->time_to_die) == -1 || \
+		to_int(argv[3], &stats->time_eating) || \
+		to_int(argv[4], &stats->time_sleeping))
+		return (0);
+	stats->fork = malloc(sizeof(pthread_mutex_t) * stats->number_of_philo);
+	if (!(stats->fork))
+		return (-1);
+	if (argv[5])
+		if (to_int(argv[5], (long *)&stats->times_eating) == -1)
+			return (0);
+	else
+		stats->times_eating = -1;
+	while (x < stats->number_of_philo)
+	{
+		pthread_mutex_init(&stats->fork[x], NULL);
+		x++;
+	}
+	pthread_mutex_init(&stats->write_fd_1, NULL);
+	return (1);
 }
