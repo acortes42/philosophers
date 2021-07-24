@@ -128,24 +128,31 @@ s_stats *ft_return_stats(int argc, char **argv)
     return (stats);
 }
 
-void *check_if_alive(void *args)
+void *check_if_alive(s_data **philo)
 {
-    s_data  *philo;
+    int     check;
 
-    philo = (s_data*)args;
-    while (philo->stats->end_of_philo > 0 && philo->stats->times_eating > 0)
+    check = 0;
+    while (1 == 1)
     {
-        pthread_mutex_lock(&philo->stats->life);
-        if (((ft_tempo() - philo->stats->timer) > philo->stats->time_to_die))
+        for (int i = 0; i < philo[0]->stats->number_of_philo;i++)
         {
-            printf(_RED);
-            console_info(philo->stats->number_of_philo, " died\n", philo->stats->write_fd_1, philo->stats->program_timer);
-            pthread_mutex_unlock(&philo->stats->life);
-            philo->stats->end_of_philo = 0;
-            return (NULL);
+            pthread_mutex_lock(&philo[i]->stats->life);
+            if (((ft_tempo() - philo[i]->timer) > philo[i]->stats->time_to_die))
+            {
+                printf(_RED);
+                pthread_mutex_unlock(&philo[i]->stats->life);
+                philo[i]->stats->end_of_philo = 0;
+                check = 1;
+                console_info(philo[i]->philo_nb, " died\n", philo[i]->stats->write_fd_1, philo[i]->stats->program_timer);
+            }
+            pthread_mutex_unlock(&philo[i]->stats->life);
+            if (check == 1)
+                break;
+            usleep(100);
         }
-        pthread_mutex_unlock(&philo->stats->life);
-        usleep(1000);
+        if (check == 1)
+            break;
     }
     return (NULL);
 }
@@ -178,15 +185,13 @@ int     main(int argc, char **argv)
     {
         pthread_create(&philo[x]->thread, NULL, &summon_a_philo, philo[x]);
         pthread_detach(philo[x]->thread);
-        pthread_create(&philo[x]->thread, NULL, &check_if_alive, philo[x]);
-        usleep(1000);
-    }
-    while (stats->end_of_philo > 0) 
         usleep(100);
+    }
+    check_if_alive(philo);
     x = -1;
     while (++x < stats->number_of_philo)
         pthread_join(philo[x]->thread, NULL);
-    msg_write("END\n");
+ //   msg_write("END\n");
     x = -1;
 	while (++x < stats->number_of_philo)
 		pthread_mutex_destroy(&stats->fork[x]);

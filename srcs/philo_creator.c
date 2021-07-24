@@ -49,7 +49,7 @@ void    *summon_a_philo(void *args)
 
     philo = (s_data*)args;
     printf(_MAGENTA);
-    philo->stats->timer = ft_tempo();
+    philo->timer = ft_tempo();
     while (breathing((philo)) > 0)
         NULL;
     if (philo->stats->times_eating > 0 && philo->nb_eat >= philo->stats->times_eating)

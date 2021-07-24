@@ -25,10 +25,11 @@ int     start_eating(s_data *philo)
     printf(_GREEN);
     if (philo->stats->end_of_philo > 0)
     {
+        philo->timer = ft_tempo();
         console_info(philo->philo_nb, " is eating\n", philo->stats->write_fd_1, philo->stats->program_timer);
+        philo->timer = ft_tempo();
         usleep(philo->stats->time_eating * 1000);
     }
-    philo->stats->timer = ft_tempo();
     pthread_mutex_unlock(&philo->stats->life);
     philo->nb_eat++;
     //aqui le asignamos valor a tempos para decirle que ya ha cómido y que, por ahora, no va a morir.

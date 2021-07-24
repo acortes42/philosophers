@@ -26,7 +26,6 @@ typedef struct      t_stats
     int             end_of_philo;
     int             value_lfork;
     int             value_rfork;
-    int             timer;
     int             program_timer;
     pthread_mutex_t *fork;
     pthread_mutex_t life;
@@ -38,6 +37,7 @@ typedef struct      t_data
 {
     int             philo_nb;
     int             nb_eat;
+    int             timer;
     pthread_t       thread;
     s_stats         *stats;
 }                   s_data;
@@ -50,6 +50,8 @@ typedef struct      t_philo
 }                   s_philo;
 
 void	msg_write(char *msg);
+int     eat(s_data *philo);
+int     breathing(s_data  *philo);
 void    console_info(int x, char *str, pthread_mutex_t mutex, int timer);
 int     eat(s_data *philo);
 int     a_philo_has_born (s_stats *stats, s_data **philo, int x);
