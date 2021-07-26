@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:13 by adrian            #+#    #+#             */
-/*   Updated: 2021/07/24 23:44:54 by adrian           ###   ########.fr       */
+/*   Updated: 2021/07/25 13:42:13 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,6 @@ int	ft_test_arguments(int argc, char **argv)
 	if (x < 1)
 	{
 		printf("No existence == No death\n");
-		return (1);
-	}
-	if (x == 1)
-	{
-		printf("Our philosopher only have one fork. Instakill.\n");
 		return (1);
 	}
 	return (0);

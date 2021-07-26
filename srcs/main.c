@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2021/07/24 23:49:03 by adrian           ###   ########.fr       */
+/*   Updated: 2021/07/26 08:54:02 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ void	*check_if_alive(t_data **philo)
 	int	i;
 
 	check = 0;
-	while (1 == 1)
+	while (1 == 1 && philo[0]->stats->end_of_philo != 0)
 	{
 		i = -1;
-		while (++i < philo[0]->stats->number_of_philo)
+		while (++i < philo[0]->stats->number_of_philo && \
+			philo[i]->stats->end_of_philo != 0)
 		{
 			pthread_mutex_lock(&philo[i]->stats->life);
 			if (((ft_tempo() - philo[i]->timer) > philo[i]->stats->time_to_die))
@@ -81,7 +82,6 @@ int	main(int argc, char **argv)
 	t_data	**philo;
 	int		x;
 
-	x = -1;
 	stats = ft_return_stats(argc, argv);
 	if (!(stats))
 		return (1);
@@ -91,15 +91,16 @@ int	main(int argc, char **argv)
 		free(stats);
 		return (1);
 	}
+	x = -1;
 	while (++x < stats->number_of_philo)
 	{
 		philo[x] = malloc(sizeof(t_data));
 		a_philo_has_born(stats, philo, x);
 	}
 	aux_threads(philo, stats);
-	free(stats->fork);
 	pthread_mutex_destroy(&stats->write_fd_1);
 	free(philo);
-	free(stats);
+	sleep(1);
+	free_stats(stats);
 	return (1);
 }

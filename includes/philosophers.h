@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:29 by adrian            #+#    #+#             */
-/*   Updated: 2021/07/24 23:38:37 by adrian           ###   ########.fr       */
+/*   Updated: 2021/07/25 00:21:51 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,6 @@ int		ft_test_arguments(int argc, char **argv);
 int		ft_process_argv(char **argv);
 t_stats	*ft_return_stats(int argc, char **argv);
 int		normi_die(t_data **philo, int i);
+void	free_stats(t_stats *stats);
 
 #endif

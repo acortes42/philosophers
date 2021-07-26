@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:52 by acortes-          #+#    #+#             */
-/*   Updated: 2021/07/24 22:27:31 by adrian           ###   ########.fr       */
+/*   Updated: 2021/07/25 13:47:22 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ void	*summon_a_philo(void *args)
 	while (breathing((philo)) > 0)
 		NULL;
 	if (philo->stats->times_eating > 0 && \
-		philo->nb_eat >= philo->stats->times_eating)
+		philo->nb_eat >= philo->stats->times_eating && \
+		philo->stats->end_of_philo != 0)
 	{
 		philo->stats->end_of_philo = 0;
-		console_info(philo->philo_nb, " survive the festival\n", \
+		console_info(philo->philo_nb, " survive\n", \
 			philo->stats->write_fd_1, philo->stats->program_timer);
 		if (philo)
 			free(philo);

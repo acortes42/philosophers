@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 23:37:35 by adrian            #+#    #+#             */
-/*   Updated: 2021/07/24 23:43:50 by adrian           ###   ########.fr       */
+/*   Updated: 2021/07/25 00:21:55 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,10 @@ int	normi_die(t_data **philo, int i)
 	console_info(philo[i]->philo_nb, " died\n", \
 		philo[i]->stats->write_fd_1, philo[i]->stats->program_timer);
 	return (1);
+}
+
+void	free_stats(t_stats *stats)
+{
+	free(stats->fork);
+	free(stats);
 }
