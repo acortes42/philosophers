@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:58:57 by adrian            #+#    #+#             */
-/*   Updated: 2021/07/24 22:14:10 by adrian           ###   ########.fr       */
+/*   Updated: 2021/07/28 17:51:37 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,18 @@ int	start_eating(t_data *philo)
 	printf(_GREEN);
 	if (philo->stats->end_of_philo > 0)
 	{
+		philo->nb_eat++;
+		if (philo->stats->times_eating > 0 && \
+			philo->nb_eat >= philo->stats->times_eating)
+		{
+			philo->stats->end_of_philo = 0;
+			console_info(philo->philo_nb, " is eating\n", \
+				philo->stats->write_fd_1, philo->stats->program_timer);
+			console_info(philo->philo_nb, " survive\n", \
+				philo->stats->write_fd_1, philo->stats->program_timer);
+			pthread_mutex_unlock(&philo->stats->life);
+			return (1);
+		}
 		philo->timer = ft_tempo();
 		console_info(philo->philo_nb, " is eating\n", \
 			philo->stats->write_fd_1, philo->stats->program_timer);
@@ -43,7 +55,6 @@ int	start_eating(t_data *philo)
 		usleep(philo->stats->time_eating * 1000);
 	}
 	pthread_mutex_unlock(&philo->stats->life);
-	philo->nb_eat++;
 	return (1);
 }
 
@@ -58,7 +69,7 @@ int	return_forks(t_data *philo)
 
 int	eat(t_data *philo)
 {
-	if (philo->stats->times_eating >= 0)
+	if (philo->stats->times_eating > 0)
 		if (philo->nb_eat >= philo->stats->times_eating)
 			return (-1);
 	if (fight_for_forks(philo) < 0 || start_eating(philo) < 0)
