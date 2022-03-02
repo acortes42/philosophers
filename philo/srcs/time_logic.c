@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time_logic.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:13 by adrian            #+#    #+#             */
-/*   Updated: 2021/07/28 17:35:23 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/02 10:42:01 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ int	init_stats(int argc, char **argv, t_stats *stats)
 	if (argv[5])
 	{
 		if (to_int(argv[5], (long *)&stats->times_eating) == -1)
+			return (0);
+		if (*argv[5] == '0' && strlen(argv[5]) == 1)
 			return (0);
 	}
 	else

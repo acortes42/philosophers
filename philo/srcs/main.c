@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2021/07/26 08:54:02 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/02 10:42:18 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,25 @@ int	ft_process_argv(char **argv)
 		return (1);
 	if (to_int(argv[3], &x) == -1)
 		return (1);
-	if (argv[4])
-		if (to_int(argv[1], &x) == -1)
-			return (1);
+	if (to_int(argv[4], &x) == -1)
+		return (1);
 	return (0);
 }
 
-void	*check_if_alive(t_data **philo)
+void	*check_if_alive(t_data **philo, t_stats *stats)
 {
-	int	check;
-	int	i;
+	int		check;
+	int		i;
 
 	check = 0;
 	while (1 == 1 && philo[0]->stats->end_of_philo != 0)
 	{
 		i = -1;
+		if (stats->time_to_die > (stats->time_eating + stats->time_sleeping))
+		{
+			usleep(100);
+			continue;
+		}
 		while (++i < philo[0]->stats->number_of_philo && \
 			philo[i]->stats->end_of_philo != 0)
 		{
@@ -67,7 +71,7 @@ void	aux_threads(t_data **philo, t_stats *stats)
 		pthread_detach(philo[x]->thread);
 		usleep(100);
 	}
-	check_if_alive(philo);
+	check_if_alive(philo, stats);
 	x = -1;
 	while (++x < stats->number_of_philo)
 		pthread_join(philo[x]->thread, NULL);
