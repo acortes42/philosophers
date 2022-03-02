@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 23:37:35 by adrian            #+#    #+#             */
-/*   Updated: 2021/07/28 17:50:22 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/02 13:44:12 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_stats	*ft_return_stats(int argc, char **argv)
 		free(stats);
 		return (NULL);
 	}
-	stats->end_of_philo = 42;
+	stats->end_of_philo = stats->number_of_philo;
 	return (stats);
 }
 
