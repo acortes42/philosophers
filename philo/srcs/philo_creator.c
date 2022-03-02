@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:52 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/02 16:44:13 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/02 19:20:52 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	*summon_a_philo(void *args)
 	philo->timer = ft_tempo();
 	while (breathing((philo)) > 0)
 		NULL;
-	if (philo->stats->all_to_eat == 0)
+	if (philo->all_to_eat == 0)
 	{
 		philo->stats->end_of_philo = 0;
 		if (philo)
@@ -78,7 +78,7 @@ int	a_philo_has_born(t_stats *stats, t_data **philo, int x)
 	philo[x]->nb_eat = 0;
 	philo[x]->stats = stats;
 	philo[x]->end_of_this_philo = 42;
-	philo[x]->stats->all_to_eat = stats->number_of_philo;
+	philo[x]->all_to_eat = stats->number_of_philo;
 	philo[x]->stats->value_lfork = x;
 	philo[x]->stats->value_rfork = (x + 1) % stats->number_of_philo;
 	return (1);

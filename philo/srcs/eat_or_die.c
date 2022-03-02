@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:58:57 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/02 17:20:48 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/02 19:22:27 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,21 @@ int	start_eating(t_data *philo)
 				philo->stats->write_fd_1, philo->stats->program_timer);
 			philo->timer = ft_tempo();
 		}
-		pl_usleep(philo->stats->time_eating);
 		if (philo->stats->times_eating > 0 && \
-			philo->nb_eat >= philo->stats->times_eating)
-		{
+			philo->nb_eat >= philo->stats->times_eating - 1)
+		{		
 			philo->end_of_this_philo = 0;
-			philo->stats->all_to_eat--;
+			philo->all_to_eat--;
 		}
 		philo->nb_eat++;
+		if (philo->all_to_eat == 0)
+			return(0);
+		pl_usleep(philo->stats->time_eating);
+
+		
 	}
 	pthread_mutex_unlock(&philo->stats->life);
-	if (philo->stats->all_to_eat == 0)
+	if (philo->all_to_eat == 0)
 		return(0);
 	return (1);
 }

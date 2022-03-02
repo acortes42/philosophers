@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:29 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/02 17:12:40 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/02 19:20:29 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef struct s_stats
 	int				times_eating;
 	int				end_of_philo;
 	int				value_lfork;
-	int				all_to_eat;
 	int				value_rfork;
 	int				program_timer;
 	pthread_mutex_t	*fork;
@@ -53,6 +52,7 @@ typedef struct s_data
 	int			nb_eat;
 	int			timer;
 	int			end_of_this_philo;
+	int			all_to_eat;
 	pthread_t	thread;
 	t_stats		*stats;
 }	t_data;
