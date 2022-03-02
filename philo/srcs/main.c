@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/02 16:44:19 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/02 17:19:13 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,12 @@ void	aux_threads(t_data **philo, t_stats *stats)
 	int	x;
 
 	x = -1;
-	stats->program_timer = ft_tempo();
+	stats->program_timer = pl_get_time_msec();;
 	while (++x < stats->number_of_philo)
 	{
 		pthread_create(&philo[x]->thread, NULL, &summon_a_philo, philo[x]);
 		pthread_detach(philo[x]->thread);
+		pl_usleep(1);
 	}
 	check_if_alive(philo, stats);
 	x = -1;

@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:29 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/02 16:43:54 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/02 17:12:40 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int		ft_process_argv(char **argv);
 t_stats	*ft_return_stats(int argc, char **argv);
 int		normi_die(t_data **philo, int i);
 void	free_stats(t_stats *stats);
+long long unsigned int	pl_get_time_msec(void);
 void	pl_usleep(int wait);
 
 #endif
