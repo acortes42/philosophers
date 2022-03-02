@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:29 by adrian            #+#    #+#             */
-/*   Updated: 2021/07/25 00:21:51 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/02 15:30:21 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_stats
 	int				times_eating;
 	int				end_of_philo;
 	int				value_lfork;
+	int				all_to_eat;
 	int				value_rfork;
 	int				program_timer;
 	pthread_mutex_t	*fork;
@@ -49,6 +50,7 @@ typedef struct s_data
 	int			philo_nb;
 	int			nb_eat;
 	int			timer;
+	int			end_of_this_philo;
 	pthread_t	thread;
 	t_stats		*stats;
 }	t_data;
