@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_creator.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:52 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/02 13:43:49 by acortes-         ###   ########.fr       */
+/*   Updated: 2021/07/28 17:45:20 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ void	*summon_a_philo(void *args)
 		philo->nb_eat >= philo->stats->times_eating && \
 		philo->stats->end_of_philo != 0)
 	{
+		philo->stats->end_of_philo = 0;
+		console_info(philo->philo_nb, " survive\n", \
+			philo->stats->write_fd_1, philo->stats->program_timer);
 		if (philo)
 			free(philo);
 		return (NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   eat_or_die.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:58:57 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/02 13:43:42 by acortes-         ###   ########.fr       */
+/*   Updated: 2021/07/28 17:51:37 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ int	start_eating(t_data *philo)
 		if (philo->stats->times_eating > 0 && \
 			philo->nb_eat >= philo->stats->times_eating)
 		{
-			philo->stats->end_of_philo--;
+			philo->stats->end_of_philo = 0;
 			console_info(philo->philo_nb, " is eating\n", \
+				philo->stats->write_fd_1, philo->stats->program_timer);
+			console_info(philo->philo_nb, " survive\n", \
 				philo->stats->write_fd_1, philo->stats->program_timer);
 			pthread_mutex_unlock(&philo->stats->life);
 			return (1);
