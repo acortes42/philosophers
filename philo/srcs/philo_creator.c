@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:52 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/02 16:00:41 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:44:13 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ int	go_sleep(t_data *philo)
 			console_info(philo->philo_nb, "is sleeping\n", \
 				philo->stats->write_fd_1, philo->stats->program_timer);
 		if (philo->stats->time_to_die > philo->stats->time_sleeping)
-			usleep(philo->stats->time_sleeping * 1000);
+			pl_usleep(philo->stats->time_sleeping);
 		else
 		{
-			usleep(philo->stats->time_to_die * 1000);
+			pl_usleep(philo->stats->time_to_die);
 			philo->stats->end_of_philo = 0;
 		}
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 23:37:35 by adrian            #+#    #+#             */
-/*   Updated: 2021/07/28 17:50:22 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/02 16:41:40 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,27 @@ void	free_stats(t_stats *stats)
 {
 	free(stats->fork);
 	free(stats);
+}
+
+long long unsigned int	pl_timeval_to_msec(struct timeval *time)
+{
+	return ((time->tv_sec * 1000) + (time->tv_usec / 1000));
+}
+
+long long unsigned int	pl_get_time_msec(void)
+{
+	struct timeval	timestamp;
+
+	gettimeofday(&timestamp, NULL);
+	return (pl_timeval_to_msec(&timestamp));
+}
+
+
+void	pl_usleep(int wait)
+{
+	long long unsigned int	time_end;
+
+	time_end = pl_get_time_msec() + wait;
+	while (pl_get_time_msec() < time_end)
+		usleep(50);
 }

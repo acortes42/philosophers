@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:58:57 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/02 16:12:34 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:44:21 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	start_eating(t_data *philo)
 				philo->stats->write_fd_1, philo->stats->program_timer);
 			philo->timer = ft_tempo();
 		}
-		usleep(philo->stats->time_eating * 1000);
+		pl_usleep(philo->stats->time_eating);
 		if (philo->stats->times_eating > 0 && \
 			philo->nb_eat >= philo->stats->times_eating)
 		{

@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:29 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/02 15:30:21 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:43:54 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <sys/time.h>
 # include <pthread.h>
 # include <string.h>
+# include <time.h>
+# include <errno.h>   
 
 # define _RED     "\x1b[31m"
 # define _GREEN   "\x1b[32m"
@@ -80,5 +82,6 @@ int		ft_process_argv(char **argv);
 t_stats	*ft_return_stats(int argc, char **argv);
 int		normi_die(t_data **philo, int i);
 void	free_stats(t_stats *stats);
+void	pl_usleep(int wait);
 
 #endif

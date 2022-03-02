@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/02 10:42:18 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:44:19 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,17 @@ void	*check_if_alive(t_data **philo, t_stats *stats)
 	int		i;
 
 	check = 0;
+	(void)stats;
 	while (1 == 1 && philo[0]->stats->end_of_philo != 0)
 	{
 		i = -1;
+		/*
 		if (stats->time_to_die > (stats->time_eating + stats->time_sleeping))
 		{
-			usleep(100);
+			pl_usleep(10);
 			continue;
 		}
+		*/
 		while (++i < philo[0]->stats->number_of_philo && \
 			philo[i]->stats->end_of_philo != 0)
 		{
@@ -51,7 +54,6 @@ void	*check_if_alive(t_data **philo, t_stats *stats)
 			pthread_mutex_unlock(&philo[i]->stats->life);
 			if (check == 1)
 				break ;
-			usleep(100);
 		}
 		if (check == 1)
 			break ;
@@ -69,7 +71,6 @@ void	aux_threads(t_data **philo, t_stats *stats)
 	{
 		pthread_create(&philo[x]->thread, NULL, &summon_a_philo, philo[x]);
 		pthread_detach(philo[x]->thread);
-		usleep(100);
 	}
 	check_if_alive(philo, stats);
 	x = -1;
@@ -104,7 +105,7 @@ int	main(int argc, char **argv)
 	aux_threads(philo, stats);
 	pthread_mutex_destroy(&stats->write_fd_1);
 	free(philo);
-	sleep(1);
+	pl_usleep(1000);
 	free_stats(stats);
 	return (1);
 }
