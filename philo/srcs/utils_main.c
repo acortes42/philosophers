@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 23:37:35 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/02 16:41:40 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/21 19:57:10 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 t_stats	*ft_return_stats(int argc, char **argv)
 {
 	t_stats	*stats;
-	int		x;
 
-	x = -1;
 	stats = malloc(sizeof(t_stats));
 	if (ft_test_arguments(argc, argv) == 1 || !(stats))
 		return (NULL);
@@ -34,8 +32,7 @@ int	normi_die(t_data **philo, int i)
 {
 	philo[i]->stats->end_of_philo = 0;
 	printf(_RED);
-	console_info(philo[i]->philo_nb, " died\n", \
-		philo[i]->stats->write_fd_1, philo[i]->stats->program_timer);
+	console_info(philo[i]->philo_nb, " died\n", *philo);
 	return (1);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_creator.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:52 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/02 19:20:52 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/21 20:41:01 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ int	go_sleep(t_data *philo)
 	if (philo->end_of_this_philo != 0)
 	{
 		if (philo->stats->end_of_philo > 0)
-			console_info(philo->philo_nb, "is sleeping\n", \
-				philo->stats->write_fd_1, philo->stats->program_timer);
+			console_info(philo->philo_nb, "is sleeping\n", &(*philo));
 		if (philo->stats->time_to_die > philo->stats->time_sleeping)
 			pl_usleep(philo->stats->time_sleeping);
 		else
@@ -41,8 +40,7 @@ int	breathing(t_data *philo)
 		{
 			printf(_YELLOW);
 			if (philo->stats->end_of_philo > 0)
-				console_info(philo->philo_nb, "is thinking\n", \
-					philo->stats->write_fd_1, philo->stats->program_timer);
+				console_info(philo->philo_nb, "is thinking\n", &(*philo));
 		}
 	}
 	else
@@ -56,8 +54,13 @@ void	*summon_a_philo(void *args)
 
 	philo = (t_data *) args;
 	printf(_MAGENTA);
-	philo->timer = ft_tempo();
-	while (breathing((philo)) > 0)
+	philo->timer = pl_get_time_msec();
+	while(!philo->stats->tmp_int)
+		usleep(50);
+	philo->timer = pl_get_time_msec();
+	if (!(philo->philo_nb % 2))
+		usleep(1500);
+	while (breathing((&(*philo))) > 0)
 		NULL;
 	if (philo->all_to_eat == 0)
 	{

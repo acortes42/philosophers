@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:29 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/02 19:20:29 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/21 20:50:46 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ typedef struct s_stats
 	int				end_of_philo;
 	int				value_lfork;
 	int				value_rfork;
-	int				program_timer;
+	long long unsigned int				program_timer;
+	int				tmp_int;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	life;
 	pthread_mutex_t	write_fd_1;
@@ -49,8 +50,9 @@ typedef struct s_stats
 typedef struct s_data
 {
 	int			philo_nb;
+	int			start;
 	int			nb_eat;
-	int			timer;
+	long long unsigned int			timer;
 	int			end_of_this_philo;
 	int			all_to_eat;
 	pthread_t	thread;
@@ -68,7 +70,7 @@ int		eat(t_data *philo);
 int		init_stats(int argc, char **argv, t_stats *stats);
 int		to_int(char *str, long *nb);
 int		breathing(t_data *philo);
-void	console_info(int x, char *str, pthread_mutex_t mutex, int timer);
+void	console_info(int x, char *str, t_data *philo);
 int		eat(t_data *philo);
 int		a_philo_has_born(t_stats *stats, t_data **philo, int x);
 void	ft_putnbr_fd(int n, int fd);
@@ -84,5 +86,7 @@ int		normi_die(t_data **philo, int i);
 void	free_stats(t_stats *stats);
 long long unsigned int	pl_get_time_msec(void);
 void	pl_usleep(int wait);
+int		start_eating(t_data *philo);
+int		fight_for_forks(t_data *philo);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   eat_or_die.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:58:57 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/02 19:22:27 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/21 19:53:47 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ int	fight_for_forks(t_data *philo)
 		pthread_mutex_lock(&philo->stats->fork[philo->philo_nb - 1]);
 		printf(_YELLOW);
 		if (philo->stats->end_of_philo > 0)
-			console_info(philo->philo_nb, " has taken a fork\n", \
-				philo->stats->write_fd_1, philo->stats->program_timer);
+			console_info(philo->philo_nb, " has taken a fork\n", &(*philo));
 	}
 
 
@@ -32,24 +31,20 @@ int	fight_for_forks(t_data *philo)
 				philo->stats->number_of_philo]);
 		printf(_YELLOW);
 		if (philo->stats->end_of_philo > 0)
-			console_info(philo->philo_nb, " has taken a fork\n", \
-				philo->stats->write_fd_1, philo->stats->program_timer);
+			console_info(philo->philo_nb, " has taken a fork\n", &(*philo));
 	}
 	return (1);
 }
 
 int	start_eating(t_data *philo)
 {
-	pthread_mutex_lock(&philo->stats->life);
 	printf(_GREEN);
 	if (philo->stats->end_of_philo > 0)
 	{
 		if (philo->end_of_this_philo != 0)
 		{
-			philo->timer = ft_tempo();
-			console_info(philo->philo_nb, " is eating\n", \
-				philo->stats->write_fd_1, philo->stats->program_timer);
-			philo->timer = ft_tempo();
+			philo->timer = pl_get_time_msec();
+			console_info(philo->philo_nb, " is eating\n", &(*philo));
 		}
 		if (philo->stats->times_eating > 0 && \
 			philo->nb_eat >= philo->stats->times_eating - 1)
@@ -64,7 +59,6 @@ int	start_eating(t_data *philo)
 
 		
 	}
-	pthread_mutex_unlock(&philo->stats->life);
 	if (philo->all_to_eat == 0)
 		return(0);
 	return (1);
@@ -87,8 +81,8 @@ int	eat(t_data *philo)
 	if (philo->stats->times_eating > 0)
 		if (philo->nb_eat >= philo->stats->times_eating)
 			return (-1);	
-	if (fight_for_forks(philo) < 0 || start_eating(philo) < 0)
+	if (fight_for_forks(&(*philo)) < 0 || start_eating(&(*(philo))) < 0)
 		return (-1);
-	return_forks(philo);
+	return_forks(&(*philo));
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:26 by acortes-          #+#    #+#             */
-/*   Updated: 2021/07/28 17:46:25 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/21 20:04:34 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,9 @@ void	ft_putnbr_fd(int n, int fd)
 	}
 }
 
-void	console_info(int x, char *str, pthread_mutex_t mutex, int timer)
+void	console_info(int x, char *str, t_data *philo)
 {
-	int	tmp;
-
-	pthread_mutex_lock(&mutex);
-	tmp = ft_tempo();
-	printf("%d %d %s", tmp - timer, x, str);
-	pthread_mutex_unlock(&mutex);
+	pthread_mutex_lock(&philo->stats->write_fd_1);
+	printf("%llu %d %s", pl_get_time_msec() - philo->stats->program_timer, x, str);
+	pthread_mutex_unlock(&philo->stats->write_fd_1);
 }
