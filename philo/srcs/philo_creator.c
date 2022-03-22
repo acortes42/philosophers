@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:52 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/22 12:32:02 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/22 12:40:16 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,8 @@
 
 int	go_sleep(t_data *philo)
 {
-	printf(_BLUE);
 	if (philo->end_of_this_philo != 0)
 	{
-		long	sleeping;
-
-		sleeping = 0;
 		if (philo->stats->end_of_philo > 0)
 			console_info(philo->philo_nb, "is sleeping\n", &(*philo));
 		if (philo->stats->time_to_die > philo->stats->time_sleeping)
@@ -43,7 +39,6 @@ int	breathing(t_data *philo)
 				return (-1);
 			if (philo->end_of_this_philo != 0)
 			{
-				printf(_YELLOW);
 				if (philo->stats->end_of_philo > 0)
 					console_info(philo->philo_nb, "is thinking\n", &(*philo));
 			}
@@ -59,7 +54,6 @@ void	*summon_a_philo(void *args)
 	t_data	*philo;
 
 	philo = (t_data *) args;
-	printf(_MAGENTA);
 	philo->timer = pl_get_time_msec();
 	while(!philo->stats->tmp_int)
 		usleep(50);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time_logic.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:13 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/21 20:51:37 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/22 12:40:33 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,7 @@ int	to_int(char *str, long *nb)
 	if (*str == '\0')
 		return (-1);
 	if (x > 7)
-	{
-		printf(_RED"Hey, use lower numbers\n");
 		return (-1);
-	}
 	*nb = 0;
 	while (*str && *str >= '0' && *str <= '9')
 		*nb = 10 * *nb + (*str++ - '0');
