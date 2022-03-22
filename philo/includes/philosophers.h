@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:29 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/21 20:50:46 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/22 11:49:53 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_stats
 	int				value_rfork;
 	long long unsigned int				program_timer;
 	int				tmp_int;
+	int				all_to_eat;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	life;
 	pthread_mutex_t	write_fd_1;
@@ -52,9 +53,8 @@ typedef struct s_data
 	int			philo_nb;
 	int			start;
 	int			nb_eat;
-	long long unsigned int			timer;
+	long long unsigned int	timer;
 	int			end_of_this_philo;
-	int			all_to_eat;
 	pthread_t	thread;
 	t_stats		*stats;
 }	t_data;

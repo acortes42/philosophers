@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/21 20:53:59 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/22 12:32:49 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	main(int argc, char **argv)
 	aux_threads(philo, stats);
 	pthread_mutex_destroy(&stats->write_fd_1);
 	free(philo);
-	pl_usleep(1000);
+	pl_usleep(1500);
 	free_stats(stats);
 	return (1);
 }
