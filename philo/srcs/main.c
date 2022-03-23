@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/23 20:09:10 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/23 20:50:11 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	check_if_alive(t_data **philo, t_stats *stats)
 		while (++i < stats->number_of_philo && \
 			!check_if_end(*philo))
 		{
+			usleep(50);
 			pthread_mutex_lock(&stats->life);
 			if (((ft_tempo() - (int)philo[i]->timer) > stats->time_to_die))
 			{
@@ -69,9 +70,11 @@ void	aux_threads(t_data **philo, t_stats *stats)
 	pthread_mutex_unlock(&stats->tmp_int_mutex);
 	stats->program_timer = pl_get_time_msec();
 	check_if_alive(philo, stats);
+	/*
 	x = -1;
 	while (++x < stats->number_of_philo)
 		pthread_join(philo[x]->thread, NULL);
+	*/
 	x = -1;
 	while (++x < stats->number_of_philo)
 		pthread_mutex_destroy(&stats->fork[x]);

@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:58:57 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/23 20:00:22 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/23 20:45:05 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,23 @@
 
 int	fight_for_forks(t_data *philo)
 {
-	if (check_if_end(&(*philo)))
-		return (-1);
 	if (philo->end_of_this_philo != 0)
 	{
 		pthread_mutex_lock(&philo->stats->fork[philo->philo_nb - 1]);
-		if (!check_if_end(&(*philo)))
-			console_info(philo->philo_nb, " has taken a fork\n", &(*philo), 0);
+		console_info(philo->philo_nb, " has taken a fork\n", &(*philo), 0);
 	}
 	if (philo->end_of_this_philo != 0)
 	{
 		pthread_mutex_lock(&philo->stats->fork[(philo->philo_nb) % \
 				philo->number_of_philo]);
-		if (!check_if_end(&(*philo)))
-			console_info(philo->philo_nb, " has taken a fork\n", &(*philo), 0);
+		console_info(philo->philo_nb, " has taken a fork\n", &(*philo), 0);
 	}
 	return (1);
 }
 
 int	start_eating(t_data *philo)
 {
-	if (check_if_end(&(*philo)) || !all_eat_is_zero(&(*philo)))
+	if (!all_eat_is_zero(&(*philo)))
 	{
 		if (philo->end_of_this_philo != 0)
 		{
