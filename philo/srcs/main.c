@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/23 15:57:16 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/23 20:09:10 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,17 @@ void	check_if_alive(t_data **philo, t_stats *stats)
 	int		i;
 
 	check = 0;
-	while (stats->end_of_philo != 0)
+	while (!check_if_end(*philo))
 	{
 		i = -1;
 		while (++i < stats->number_of_philo && \
-			stats->end_of_philo != 0)
+			!check_if_end(*philo))
 		{
 			pthread_mutex_lock(&stats->life);
 			if (((ft_tempo() - (int)philo[i]->timer) > stats->time_to_die))
 			{
-				philo[i]->stats->end_of_philo = 0;
 				console_info(philo[i]->philo_nb, " died\n", *philo, 1);
+				philo[i]->stats->end_of_philo = 0;
 				check = 1;
 			}
 			pthread_mutex_unlock(&stats->life);

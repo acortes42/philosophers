@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:29 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/23 17:38:53 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/23 19:46:37 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_stats
 	long long unsigned int				program_timer;
 	pthread_mutex_t	tmp_int_mutex;
 	int				all_to_eat;
+	pthread_mutex_t	all_to_eat_mutex;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	life;
 	pthread_mutex_t	write_fd_1;
@@ -92,6 +93,7 @@ void	pl_usleep(int wait);
 int		start_eating(t_data *philo);
 int		fight_for_forks(t_data *philo);
 int		check_if_end(t_data *philo);
+int		all_eat_is_zero(t_data *philo);
 
 
 #endif

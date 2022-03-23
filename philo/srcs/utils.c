@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:26 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/23 15:12:46 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/23 20:09:59 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	ft_putnbr_fd(int n, int fd)
 
 void	console_info(int x, char *str, t_data *philo, int last_breath)
 {
+	(void) last_breath;
 	pthread_mutex_lock(&philo->stats->write_fd_1);
 	printf("%llu %d %s", pl_get_time_msec() - philo->stats->program_timer, x, str);
 	if(!last_breath)

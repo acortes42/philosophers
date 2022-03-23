@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:52 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/23 17:51:34 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/23 19:51:31 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,18 @@ int	check_if_end(t_data *philo)
 	return(1);
 }
 
+int	all_eat_is_zero(t_data *philo)
+{
+	pthread_mutex_lock(&philo->stats->all_to_eat_mutex);
+	if (philo->stats->all_to_eat == 0)
+	{
+		pthread_mutex_unlock(&philo->stats->all_to_eat_mutex);
+		return(1);
+	}
+	pthread_mutex_unlock(&philo->stats->all_to_eat_mutex);
+	return(0);
+}
+
 int	go_sleep(t_data *philo)
 {
 	if (philo->end_of_this_philo != 0)
@@ -31,7 +43,7 @@ int	go_sleep(t_data *philo)
 		if (check_if_end(&(*philo)))
 			console_info(philo->philo_nb, "is sleeping\n", &(*philo), 0);
 		if (philo->time_to_die > philo->time_sleeping)
-			pl_usleep(philo->stats->time_sleeping);
+			pl_usleep(philo->time_sleeping);
 		else
 		{
 			pl_usleep(philo->time_to_die);
@@ -45,7 +57,7 @@ int	breathing(t_data *philo)
 {
 	if (!check_if_end(&(*philo)) && eat(philo) > 0)
 	{
-		if (philo->stats->all_to_eat != 0)
+		if (!all_eat_is_zero(&(*philo)))
 		{
 			if (go_sleep(philo) <= 0)
 				return (-1);
