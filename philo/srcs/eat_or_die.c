@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:58:57 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/23 16:05:34 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/23 17:53:27 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,19 @@
 
 int	fight_for_forks(t_data *philo)
 {
-	if (philo->stats->end_of_philo <= 0)
+	if (check_if_end(&(*philo)))
 		return (-1);
 	if (philo->end_of_this_philo != 0)
 	{
 		pthread_mutex_lock(&philo->stats->fork[philo->philo_nb - 1]);
-		if (philo->stats->end_of_philo > 0)
+		if (check_if_end(&(*philo)))
 			console_info(philo->philo_nb, " has taken a fork\n", &(*philo), 0);
 	}
-
-
 	if (philo->end_of_this_philo != 0)
 	{
 		pthread_mutex_lock(&philo->stats->fork[(philo->philo_nb) % \
 				philo->stats->number_of_philo]);
-		if (philo->stats->end_of_philo > 0)
+		if (check_if_end(&(*philo)))
 			console_info(philo->philo_nb, " has taken a fork\n", &(*philo), 0);
 	}
 	return (1);
@@ -36,9 +34,9 @@ int	fight_for_forks(t_data *philo)
 
 int	start_eating(t_data *philo)
 {
-	if (philo->stats->end_of_philo > 0 || philo->stats->all_to_eat != 0)
+	if (check_if_end(&(*philo)) || philo->stats->all_to_eat != 0)
 	{
-		if (philo->end_of_this_philo != 0 && philo->stats->end_of_philo > 0)
+		if (philo->end_of_this_philo != 0)
 		{
 			philo->timer = pl_get_time_msec();
 			console_info(philo->philo_nb, " is eating\n", &(*philo), 0);

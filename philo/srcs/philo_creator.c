@@ -6,17 +6,29 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:52 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/23 16:03:04 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/23 17:51:34 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
+int	check_if_end(t_data *philo)
+{
+	pthread_mutex_lock(&philo->stats->end_of_philo_mutex);
+	if (philo->stats->end_of_philo != 0)
+	{
+		pthread_mutex_unlock(&philo->stats->end_of_philo_mutex);
+		return(0);
+	}
+	pthread_mutex_unlock(&philo->stats->end_of_philo_mutex);
+	return(1);
+}
+
 int	go_sleep(t_data *philo)
 {
 	if (philo->end_of_this_philo != 0)
 	{
-		if (philo->stats->end_of_philo > 0)
+		if (check_if_end(&(*philo)))
 			console_info(philo->philo_nb, "is sleeping\n", &(*philo), 0);
 		if (philo->time_to_die > philo->time_sleeping)
 			pl_usleep(philo->stats->time_sleeping);
@@ -31,7 +43,7 @@ int	go_sleep(t_data *philo)
 
 int	breathing(t_data *philo)
 {
-	if (philo->stats->end_of_philo > 0 && eat(philo) > 0)
+	if (!check_if_end(&(*philo)) && eat(philo) > 0)
 	{
 		if (philo->stats->all_to_eat != 0)
 		{
@@ -39,7 +51,7 @@ int	breathing(t_data *philo)
 				return (-1);
 			if (philo->end_of_this_philo != 0)
 			{
-				if (philo->stats->end_of_philo > 0)
+				if (check_if_end(&(*philo)))
 					console_info(philo->philo_nb, "is thinking\n", &(*philo), 0);
 			}
 		}
@@ -61,16 +73,7 @@ void	*summon_a_philo(void *args)
 		pl_usleep(50);
 	while (breathing((&(*philo))) > 0)
 		NULL;
-	if (philo->stats->all_to_eat == 0)
-	{
-		philo->stats->end_of_philo = 0;
-		if (philo)
-			free(philo);
-		return (NULL);
-	}
 	philo->stats->end_of_philo = 0;
-	if (philo)
-		free(philo);
 	return (NULL);
 }
 
