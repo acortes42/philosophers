@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/23 20:50:11 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/23 23:30:11 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,13 @@ void	aux_threads(t_data **philo, t_stats *stats)
 	pthread_mutex_lock(&stats->tmp_int_mutex);
 	while (++x < stats->number_of_philo)
 		pthread_create(&philo[x]->thread, NULL, &summon_a_philo, philo[x]);
-	x = -1;
 	pl_usleep(500);
 	pthread_mutex_unlock(&stats->tmp_int_mutex);
 	stats->program_timer = pl_get_time_msec();
 	check_if_alive(philo, stats);
-	/*
 	x = -1;
 	while (++x < stats->number_of_philo)
 		pthread_join(philo[x]->thread, NULL);
-	*/
 	x = -1;
 	while (++x < stats->number_of_philo)
 		pthread_mutex_destroy(&stats->fork[x]);
