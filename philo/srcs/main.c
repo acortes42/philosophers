@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/23 23:30:11 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/23 23:32:47 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	check_if_alive(t_data **philo, t_stats *stats)
 
 void	aux_threads(t_data **philo, t_stats *stats)
 {
-	int	x;
+	int	x; 
 
 	x = -1;
 	pthread_mutex_lock(&stats->tmp_int_mutex);

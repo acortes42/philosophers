@@ -6,7 +6,7 @@
 /*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:52 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/23 23:30:16 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/23 23:32:45 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	breathing(t_data *philo)
 	}
 	else
 		return (-1);
-	return (1);
+	return (1); 
 }
 
 void	*summon_a_philo(void *args)
