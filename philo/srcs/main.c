@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/22 12:32:49 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/23 15:57:16 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,30 +28,32 @@ int	ft_process_argv(char **argv)
 	return (0);
 }
 
-void	*check_if_alive(t_data **philo, t_stats *stats)
+void	check_if_alive(t_data **philo, t_stats *stats)
 {
 	int		check;
 	int		i;
 
 	check = 0;
-	(void)stats;
-	while (1 == 1 && philo[0]->stats->end_of_philo != 0)
+	while (stats->end_of_philo != 0)
 	{
 		i = -1;
-		while (++i < philo[0]->stats->number_of_philo && \
-			philo[i]->stats->end_of_philo != 0)
+		while (++i < stats->number_of_philo && \
+			stats->end_of_philo != 0)
 		{
-			pthread_mutex_lock(&philo[i]->stats->life);
-			if (((ft_tempo() - (int)philo[i]->timer) > philo[i]->stats->time_to_die))
-				check = normi_die(philo, i);
-			pthread_mutex_unlock(&philo[i]->stats->life);
+			pthread_mutex_lock(&stats->life);
+			if (((ft_tempo() - (int)philo[i]->timer) > stats->time_to_die))
+			{
+				philo[i]->stats->end_of_philo = 0;
+				console_info(philo[i]->philo_nb, " died\n", *philo, 1);
+				check = 1;
+			}
+			pthread_mutex_unlock(&stats->life);
 			if (check == 1)
 				break ;
 		}
 		if (check == 1)
 			break ;
 	}
-	return (NULL);
 }
 
 void	aux_threads(t_data **philo, t_stats *stats)
@@ -59,15 +61,13 @@ void	aux_threads(t_data **philo, t_stats *stats)
 	int	x;
 
 	x = -1;
-	stats->program_timer = pl_get_time_msec();
-	stats->tmp_int = 0;
+	pthread_mutex_lock(&stats->tmp_int_mutex);
 	while (++x < stats->number_of_philo)
-	{
 		pthread_create(&philo[x]->thread, NULL, &summon_a_philo, philo[x]);
-		//pthread_detach(philo[x]->thread);
-	}
 	x = -1;
-	stats->tmp_int = 1;
+	pl_usleep(500);
+	pthread_mutex_unlock(&stats->tmp_int_mutex);
+	stats->program_timer = pl_get_time_msec();
 	check_if_alive(philo, stats);
 	x = -1;
 	while (++x < stats->number_of_philo)
@@ -101,7 +101,7 @@ int	main(int argc, char **argv)
 	aux_threads(philo, stats);
 	pthread_mutex_destroy(&stats->write_fd_1);
 	free(philo);
-	pl_usleep(1500);
+	pl_usleep(500);
 	free_stats(stats);
 	return (1);
 }

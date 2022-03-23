@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 23:37:35 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/22 12:40:20 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/23 15:18:37 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,6 @@ t_stats	*ft_return_stats(int argc, char **argv)
 	}
 	stats->end_of_philo = 42;
 	return (stats);
-}
-
-int	normi_die(t_data **philo, int i)
-{
-	philo[i]->stats->end_of_philo = 0;
-	console_info(philo[i]->philo_nb, " died\n", *philo);
-	return (1);
 }
 
 void	free_stats(t_stats *stats)

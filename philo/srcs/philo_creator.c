@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_creator.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:52 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/22 12:40:16 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/03/23 16:03:04 by adrian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ int	go_sleep(t_data *philo)
 	if (philo->end_of_this_philo != 0)
 	{
 		if (philo->stats->end_of_philo > 0)
-			console_info(philo->philo_nb, "is sleeping\n", &(*philo));
-		if (philo->stats->time_to_die > philo->stats->time_sleeping)
+			console_info(philo->philo_nb, "is sleeping\n", &(*philo), 0);
+		if (philo->time_to_die > philo->time_sleeping)
 			pl_usleep(philo->stats->time_sleeping);
 		else
 		{
-			pl_usleep(philo->stats->time_to_die);
+			pl_usleep(philo->time_to_die);
 			philo->stats->end_of_philo = 0;
 		}
 	}
@@ -40,7 +40,7 @@ int	breathing(t_data *philo)
 			if (philo->end_of_this_philo != 0)
 			{
 				if (philo->stats->end_of_philo > 0)
-					console_info(philo->philo_nb, "is thinking\n", &(*philo));
+					console_info(philo->philo_nb, "is thinking\n", &(*philo), 0);
 			}
 		}
 	}
@@ -54,12 +54,11 @@ void	*summon_a_philo(void *args)
 	t_data	*philo;
 
 	philo = (t_data *) args;
+	pthread_mutex_lock(&philo->stats->tmp_int_mutex);
 	philo->timer = pl_get_time_msec();
-	while(!philo->stats->tmp_int)
-		usleep(50);
-	philo->timer = pl_get_time_msec();
+	pthread_mutex_unlock(&philo->stats->tmp_int_mutex);
 	if (!(philo->philo_nb % 2))
-		usleep(1500);
+		pl_usleep(50);
 	while (breathing((&(*philo))) > 0)
 		NULL;
 	if (philo->stats->all_to_eat == 0)
@@ -82,7 +81,11 @@ int	a_philo_has_born(t_stats *stats, t_data **philo, int x)
 	philo[x]->stats = stats;
 	philo[x]->end_of_this_philo = 42;
 	philo[x]->stats->all_to_eat = stats->number_of_philo;
-	philo[x]->stats->value_lfork = x;
-	philo[x]->stats->value_rfork = (x + 1) % stats->number_of_philo;
+	philo[x]->number_of_philo = stats->number_of_philo;
+	philo[x]->time_to_die = stats->time_to_die;
+	philo[x]->time_eating = stats->time_eating;
+	philo[x]->time_sleeping = stats->time_sleeping;
+	philo[x]->times_eating = stats->times_eating;
+	
 	return (1);
 }
