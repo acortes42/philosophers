@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   philo_creator.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:52 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/23 23:32:45 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/29 17:17:31 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
+
+void	end_to_zero(t_data *philo)
+{
+	pthread_mutex_lock(&philo->stats->end_of_philo_mutex);
+	philo->stats->end_of_philo = 0;
+	pthread_mutex_unlock(&philo->stats->end_of_philo_mutex);
+}
 
 int	check_if_end(t_data *philo)
 {
@@ -36,6 +43,34 @@ int	all_eat_is_zero(t_data *philo)
 	return(0);
 }
 
+int	check_if_start(t_data *philo)
+{
+	pthread_mutex_lock(&philo->stats->tmp_int_mutex);
+	if (philo->stats->tmp_int != 0)
+	{
+		pthread_mutex_unlock(&philo->stats->tmp_int_mutex);
+		return(0);
+	}
+	pthread_mutex_unlock(&philo->stats->tmp_int_mutex);
+	return(1);
+}
+
+int	reduce_all_eat(t_data *philo)
+{
+	pthread_mutex_lock(&philo->stats->tmp_int_mutex);
+	philo->stats->all_to_eat--;
+	pthread_mutex_unlock(&philo->stats->tmp_int_mutex);
+	return(1);
+}
+
+void	change_tmp_int(t_stats *stats, int x)
+{
+	pthread_mutex_lock(&stats->tmp_int_mutex);
+	stats->tmp_int = x;
+	printf("wololo\n");
+	pthread_mutex_unlock(&stats->tmp_int_mutex);
+}
+
 int	go_sleep(t_data *philo)
 {
 	if (philo->end_of_this_philo != 0)
@@ -47,7 +82,7 @@ int	go_sleep(t_data *philo)
 		else
 		{
 			pl_usleep(philo->time_to_die);
-			philo->stats->end_of_philo = 0;
+			end_to_zero(&(*philo));
 		}
 	}
 	return (1);
@@ -78,29 +113,14 @@ void	*summon_a_philo(void *args)
 	t_data	*philo;
 
 	philo = (t_data *) args;
-	pthread_mutex_lock(&philo->stats->tmp_int_mutex);
 	philo->timer = pl_get_time_msec();
-	pthread_mutex_unlock(&philo->stats->tmp_int_mutex);
+	philo->stats->tmp_int = 500;
+	/*while(check_if_start(&(*philo)))
+		;*/
 	if (!(philo->philo_nb % 2))
 		pl_usleep(50);
 	while (breathing((&(*philo))) > 0)
 		NULL;
-	philo->stats->end_of_philo = 0;
+	end_to_zero(&(*philo));
 	return (NULL);
-}
-
-int	a_philo_has_born(t_stats *stats, t_data **philo, int x)
-{
-	philo[x]->philo_nb = x + 1;
-	philo[x]->nb_eat = 0;
-	philo[x]->stats = stats;
-	philo[x]->end_of_this_philo = 42;
-	philo[x]->stats->all_to_eat = stats->number_of_philo;
-	philo[x]->number_of_philo = stats->number_of_philo;
-	philo[x]->time_to_die = stats->time_to_die;
-	philo[x]->time_eating = stats->time_eating;
-	philo[x]->time_sleeping = stats->time_sleeping;
-	philo[x]->times_eating = stats->times_eating;
-	
-	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:26 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/23 23:32:43 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/29 17:05:14 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ void	console_info(int x, char *str, t_data *philo, int last_breath)
 {
 	(void) last_breath;
 	pthread_mutex_lock(&philo->stats->write_fd_1);
-	printf("%llu %d %s", pl_get_time_msec() - philo->stats->program_timer, x, str);
+	printf("%lld %d %s", pl_get_time_msec() - philo->stats->program_timer, x, str);
 	pthread_mutex_unlock(&philo->stats->write_fd_1);
 }

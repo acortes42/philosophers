@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   eat_or_die.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:58:57 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/23 23:35:42 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/29 17:21:08 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	start_eating(t_data *philo)
 			}
 			if (philo->times_eating > 0 && \
 				philo->nb_eat >= philo->times_eating - 1)
-				philo->stats->all_to_eat--;
+				reduce_all_eat(&(*philo));
 			philo->nb_eat++;
 			if (all_eat_is_zero(&(*philo)))
 				return(0);

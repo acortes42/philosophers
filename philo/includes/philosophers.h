@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:29 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/23 19:46:37 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/29 17:18:26 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_stats
 	pthread_mutex_t	end_of_philo_mutex;
 	int				end_of_philo;
 	long long unsigned int				program_timer;
+	int				tmp_int;
 	pthread_mutex_t	tmp_int_mutex;
 	int				all_to_eat;
 	pthread_mutex_t	all_to_eat_mutex;
@@ -86,14 +87,17 @@ void	*summon_a_philo(void *args);
 size_t	ft_strlen(const char *s);
 int		ft_test_arguments(int argc, char **argv);
 int		ft_process_argv(char **argv);
-t_stats	*ft_return_stats(int argc, char **argv);
+int		ft_return_stats(int argc, char **argv, t_stats *stats);
 void	free_stats(t_stats *stats);
 long long unsigned int	pl_get_time_msec(void);
-void	pl_usleep(int wait);
+void	pl_usleep(long wait);
 int		start_eating(t_data *philo);
 int		fight_for_forks(t_data *philo);
 int		check_if_end(t_data *philo);
 int		all_eat_is_zero(t_data *philo);
-
+void	change_tmp_int(t_stats *stats, int x);
+int		check_if_start(t_data *philo);
+void	end_to_zero(t_data *philo);
+int		reduce_all_eat(t_data *philo);
 
 #endif

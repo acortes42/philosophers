@@ -3,35 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   utils_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adrian <adrian@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 23:37:35 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/23 15:18:37 by adrian           ###   ########.fr       */
+/*   Updated: 2022/03/29 16:10:13 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-t_stats	*ft_return_stats(int argc, char **argv)
+int	ft_return_stats(int argc, char **argv, t_stats *stats)
 {
-	t_stats	*stats;
-
-	stats = malloc(sizeof(t_stats));
-	if (ft_test_arguments(argc, argv) == 1 || !(stats))
-		return (NULL);
+	if (ft_test_arguments(argc, argv) == 1)
+		return (0);
 	if (init_stats(argc, argv, stats) <= 0)
 	{
-		free(stats);
-		return (NULL);
+		free(stats->fork);
+		return (0);
 	}
 	stats->end_of_philo = 42;
-	return (stats);
-}
-
-void	free_stats(t_stats *stats)
-{
-	free(stats->fork);
-	free(stats);
+	return (1);
 }
 
 long long unsigned int	pl_timeval_to_msec(struct timeval *time)
@@ -48,7 +39,7 @@ long long unsigned int	pl_get_time_msec(void)
 }
 
 
-void	pl_usleep(int wait)
+void	pl_usleep(long wait)
 {
 	long long unsigned int	time_end;
 
