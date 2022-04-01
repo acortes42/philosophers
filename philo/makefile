@@ -6,7 +6,7 @@
 
 CC			=	gcc
 
-CC_FLAGS	=	-Wall -Wextra -Werror #-fsanitize=thread
+CC_FLAGS	=	-Wall -Wextra -Werror -O3 -lpthread -fsanitize=address
 
 
 # DELETE #
@@ -28,6 +28,7 @@ SRCS			=	srcs/eat_or_die.c \
 					srcs/philo_creator.c \
 					srcs/time_logic.c \
 					srcs/main.c \
+					srcs/aux.c \
 					srcs/utils_main.c
 
 # COMPILED_SOURCES #

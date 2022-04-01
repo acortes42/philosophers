@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:13 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/29 16:08:52 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/04/01 13:40:49 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ int	ft_test_arguments(int argc, char **argv)
 	}
 	if (to_int(argv[1], &x) < 0)
 		return (1);
-	if (x < 1)
+	if (x < 2)
 	{
-		printf("No existence == No death\n");
+		printf("Two or more philosophers required\n");
 		return (1);
 	}
 	return (0);
@@ -65,7 +65,7 @@ int	init_stats(int argc, char **argv, t_stats *stats)
 
 	x = -1;
 	if (argc < 4 || to_int(argv[1], (long *)&stats->number_of_philo) == -1 || \
-		stats->number_of_philo >= 500 || to_int(argv[2], \
+		stats->number_of_philo > 250 || to_int(argv[2], \
 		&stats->time_to_die) == -1 || \
 		to_int(argv[3], &stats->time_eating) || \
 		to_int(argv[4], &stats->time_sleeping))

@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:58:57 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/29 17:21:08 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/04/01 14:15:15 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,40 @@ int	fight_for_forks(t_data *philo)
 	return (1);
 }
 
+void	aux_start_eating(t_data *philo)
+{
+	if (philo->end_of_this_philo != 0)
+	{
+		philo->timer = pl_get_time_msec();
+		console_info(philo->philo_nb, " is eating\n", &(*philo), 0);
+	}
+	if (philo->times_eating > 0 && \
+		philo->nb_eat >= philo->times_eating - 1)
+		reduce_all_eat(&(*philo));
+	philo->nb_eat++;
+}
+
 int	start_eating(t_data *philo)
 {
+	int	i;
+
+	i = -1;
 	if (!all_eat_is_zero(&(*philo)))
 	{
 		if (!check_if_end(&(*philo)))
 		{
-			if (philo->end_of_this_philo != 0)
-			{
-				philo->timer = pl_get_time_msec();
-				console_info(philo->philo_nb, " is eating\n", &(*philo), 0);
-			}
-			if (philo->times_eating > 0 && \
-				philo->nb_eat >= philo->times_eating - 1)
-				reduce_all_eat(&(*philo));
-			philo->nb_eat++;
+			aux_start_eating(&(*philo));
 			if (all_eat_is_zero(&(*philo)))
-				return(0);
-			pl_usleep(philo->time_eating);
+				return (0);
+			if (philo->time_to_die > philo->time_eating)
+				while (++i < philo->time_eating)
+					pl_usleep(1);
+			else
+				pl_usleep(philo->time_to_die);
 		}
 	}
 	if (all_eat_is_zero(&(*philo)))
-		return(0);
+		return (0);
 	return (1);
 }
 

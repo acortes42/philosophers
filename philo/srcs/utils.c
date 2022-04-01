@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:26 by acortes-          #+#    #+#             */
-/*   Updated: 2022/03/29 17:05:14 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/04/01 14:52:04 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,14 @@ void	ft_putnbr_fd(int n, int fd)
 		x = (n % 10) + '0';
 		write(fd, &x, 1);
 	}
-} 
+}
 
 void	console_info(int x, char *str, t_data *philo, int last_breath)
 {
 	(void) last_breath;
 	pthread_mutex_lock(&philo->stats->write_fd_1);
-	printf("%lld %d %s", pl_get_time_msec() - philo->stats->program_timer, x, str);
+	if (!check_if_end(&(*philo)))
+		printf("%lld %d %s", pl_get_time_msec() - \
+			philo->stats->program_timer, x, str);
 	pthread_mutex_unlock(&philo->stats->write_fd_1);
 }

@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 23:37:35 by adrian            #+#    #+#             */
-/*   Updated: 2022/03/29 16:10:13 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/04/01 15:18:29 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ long long unsigned int	pl_get_time_msec(void)
 	gettimeofday(&timestamp, NULL);
 	return (pl_timeval_to_msec(&timestamp));
 }
-
 
 void	pl_usleep(long wait)
 {
