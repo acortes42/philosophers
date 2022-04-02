@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:29 by adrian            #+#    #+#             */
-/*   Updated: 2022/04/01 15:24:52 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/04/02 19:15:15 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ typedef struct s_stats
 	int						all_to_eat;
 	pthread_mutex_t			all_to_eat_mutex;
 	pthread_mutex_t			*fork;
-	pthread_mutex_t			life;
 	pthread_mutex_t			write_fd_1;
+	pthread_mutex_t			check_timer;
 }	t_stats;
 
 typedef struct s_data
@@ -64,13 +64,6 @@ typedef struct s_data
 	pthread_t				thread;
 	t_stats					*stats;
 }	t_data;
-
-typedef struct s_philo
-{
-	t_stats	stats;
-	t_data	data;
-
-}	t_philo;
 
 int						eat(t_data *philo);
 int						init_stats(int argc, char **argv, t_stats *stats);
@@ -99,5 +92,6 @@ void					change_tmp_int(t_stats *stats, int x);
 int						check_if_start(t_data *philo);
 void					end_to_zero(t_data *philo);
 int						reduce_all_eat(t_data *philo);
+void					norminette_chech_if_alive(t_data *philo, long i);
 
 #endif

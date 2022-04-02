@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:54:52 by acortes-          #+#    #+#             */
-/*   Updated: 2022/04/01 14:54:37 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/04/02 12:47:40 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	reduce_all_eat(t_data *philo)
 {
-	pthread_mutex_lock(&philo->stats->tmp_int_mutex);
+	pthread_mutex_lock(&philo->stats->all_to_eat_mutex);
 	philo->stats->all_to_eat--;
-	pthread_mutex_unlock(&philo->stats->tmp_int_mutex);
+	pthread_mutex_unlock(&philo->stats->all_to_eat_mutex);
 	return (1);
 }
 
@@ -24,7 +24,7 @@ void	change_tmp_int(t_stats *stats, int x)
 {
 	pthread_mutex_lock(&stats->tmp_int_mutex);
 	stats->tmp_int = x;
-	printf("wololo\n");
+	stats->program_timer = pl_get_time_msec();
 	pthread_mutex_unlock(&stats->tmp_int_mutex);
 }
 
@@ -69,7 +69,9 @@ void	*summon_a_philo(void *args)
 	t_data	*philo;
 
 	philo = (t_data *) args;
+	pthread_mutex_lock(&philo->stats->check_timer);
 	philo->timer = pl_get_time_msec();
+	pthread_mutex_unlock(&philo->stats->check_timer);
 	if (!(philo->philo_nb % 2))
 		pl_usleep(50);
 	while (breathing((&(*philo))) > 0)

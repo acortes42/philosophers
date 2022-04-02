@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 23:37:35 by adrian            #+#    #+#             */
-/*   Updated: 2022/04/01 15:18:29 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/04/02 12:48:02 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ int	ft_return_stats(int argc, char **argv, t_stats *stats)
 		free(stats->fork);
 		return (0);
 	}
+	pthread_mutex_init(&stats->write_fd_1, NULL);
+	pthread_mutex_init(&stats->end_of_philo_mutex, NULL);
+	pthread_mutex_init(&stats->tmp_int_mutex, NULL);
+	pthread_mutex_init(&stats->all_to_eat_mutex, NULL);
+	pthread_mutex_init(&stats->check_timer, NULL);
 	stats->end_of_philo = 42;
 	return (1);
 }

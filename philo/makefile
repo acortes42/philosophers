@@ -6,7 +6,7 @@
 
 CC			=	gcc
 
-CC_FLAGS	=	-Wall -Wextra -Werror -O3 -lpthread -fsanitize=address
+CC_FLAGS	=	-Wall -Wextra -Werror #-g -fsanitize=thread
 
 
 # DELETE #

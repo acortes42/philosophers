@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:13 by adrian            #+#    #+#             */
-/*   Updated: 2022/04/01 13:40:49 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/04/02 18:52:09 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ int	ft_test_arguments(int argc, char **argv)
 	}
 	if (to_int(argv[1], &x) < 0)
 		return (1);
-	if (x < 2)
+	if (x < 1)
 	{
-		printf("Two or more philosophers required\n");
+		printf("One or more philosophers required\n");
 		return (1);
 	}
 	return (0);
@@ -65,7 +65,7 @@ int	init_stats(int argc, char **argv, t_stats *stats)
 
 	x = -1;
 	if (argc < 4 || to_int(argv[1], (long *)&stats->number_of_philo) == -1 || \
-		stats->number_of_philo > 250 || to_int(argv[2], \
+		stats->number_of_philo > 200 || to_int(argv[2], \
 		&stats->time_to_die) == -1 || \
 		to_int(argv[3], &stats->time_eating) || \
 		to_int(argv[4], &stats->time_sleeping))
@@ -84,6 +84,5 @@ int	init_stats(int argc, char **argv, t_stats *stats)
 		stats->times_eating = -1;
 	while (++x < stats->number_of_philo)
 		pthread_mutex_init(&stats->fork[x], NULL);
-	pthread_mutex_init(&stats->write_fd_1, NULL);
 	return (1);
 }
