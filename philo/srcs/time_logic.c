@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:59:13 by adrian            #+#    #+#             */
-/*   Updated: 2022/04/02 18:52:09 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/04/09 12:23:45 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ int	ft_test_arguments(int argc, char **argv)
 	if (x < 1)
 	{
 		printf("One or more philosophers required\n");
+		return (1);
+	}
+	if (x > 200)
+	{
+		printf("Max number of philosophers: 200\n");
 		return (1);
 	}
 	return (0);

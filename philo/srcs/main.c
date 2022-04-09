@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:42:06 by acortes-          #+#    #+#             */
-/*   Updated: 2022/04/09 12:17:21 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/04/09 12:25:04 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	check_if_alive(t_data *philo, t_stats *stats)
 			norminette_chech_if_alive(philo, 0);
 			break ;
 		}
-		else if (philo->number_of_philo > 1 && (origin - philo[stats->number_of_philo - 2].timer) > die)
+		else if (philo->number_of_philo > 1 && \
+			(origin - philo[stats->number_of_philo - 2].timer) > die)
 		{
 			pthread_mutex_unlock(&stats->check_timer);
 			norminette_chech_if_alive(philo, stats->number_of_philo - 2);
