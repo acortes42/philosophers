@@ -6,7 +6,7 @@
 /*   By: acortes- <acortes-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 21:58:57 by adrian            #+#    #+#             */
-/*   Updated: 2022/04/02 19:25:17 by acortes-         ###   ########.fr       */
+/*   Updated: 2022/04/09 12:12:41 by acortes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	fight_for_forks(t_data *philo)
 	if (philo->number_of_philo == 1)
 	{
 		philo->end_of_this_philo = 0;
+		pl_usleep(philo->time_to_die + 150);
 		pthread_mutex_unlock(&philo->stats->fork[philo->philo_nb - 1]);
 	}
 	if (philo->end_of_this_philo != 0)
@@ -76,12 +77,9 @@ int	start_eating(t_data *philo)
 
 int	return_forks(t_data *philo)
 {
-	if (philo->end_of_this_philo != 0 && !all_eat_is_zero(&(*philo)))
-	{
-		pthread_mutex_unlock(&philo->stats->fork[philo->philo_nb - 1]);
-		pthread_mutex_unlock(&philo->stats->fork[(philo->philo_nb) \
-			% philo->number_of_philo]);
-	}
+	pthread_mutex_unlock(&philo->stats->fork[philo->philo_nb - 1]);
+	pthread_mutex_unlock(&philo->stats->fork[(philo->philo_nb) \
+		% philo->number_of_philo]);
 	return (1);
 }
 
